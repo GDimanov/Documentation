@@ -267,6 +267,7 @@ Created user will be automatically assigned to the Company of the user who's cre
 
     [
     {
+		"id": 29,
         "name": "Eltrade",
         "defObjId": 1,
         "companyId": 1,
@@ -281,6 +282,7 @@ Created user will be automatically assigned to the Company of the user who's cre
         "active": true
     },
     {
+		"id": 28,
         "name": "owner",
         "defObjId": 4,
         "companyId": 2,
@@ -294,6 +296,7 @@ Created user will be automatically assigned to the Company of the user who's cre
         "active": true
     },
     {
+		"id": 27,
         "name": "owner1",
         "defObjId": 3,
         "companyId": 3,
@@ -325,6 +328,7 @@ Created user will be automatically assigned to the Company of the user who's cre
 
     [
     {
+	"id": 29,
     "name": "1",
     "defObjId": 1,
 	"companyId": 2,
@@ -338,6 +342,7 @@ Created user will be automatically assigned to the Company of the user who's cre
     "active": true
     },
     {
+	"id": 28,
     "name": "manager2",
     "defObjId": 1,
 	"companyId": 2,
@@ -351,6 +356,7 @@ Created user will be automatically assigned to the Company of the user who's cre
     "active": true
     },
     {
+	"id": 27,
     "name": "manager1",
     "defObjId": 1,
 	"companyId": 2,
@@ -361,6 +367,7 @@ Created user will be automatically assigned to the Company of the user who's cre
     "active": true
     },
     {
+	"id": 26,
     "name": "manager3",
     "defObjId": 1,
 	"companyId": 2,
@@ -818,13 +825,14 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 | `isRechargeable`   | int   | Set if card is Rechargeable.<br>integer values 0 - False, 1 - True<br> | YES | 1|
 | `isReusable`   | int   | Set if card is Reusable.<br>integer values 0 - False, 1 - True<br> | YES | 1|
 | `isCashBack`   | int   | Set if card can benefit from Cashbacks.<br>integer values 0 - False, 1 - True<br> | YES | 0|
-| `cardName`   | String   | Name of the group. | NO | "MyCard"|
+| `cardName`   | String   | Optional name of the Card. | NO | "MyCard"|
 | `forbiddenObjects`   | List<long>   | A list of IDs representing the branches that should be marked as forbidden for the card. | YES | 101,102,103|
 
 
 **RESPONSE**
 
     {
+	"transactionId": 10,
     "serialNumber": "111",
     "startDate": "2024-10-30",
     "endDate": "2025-01-30",
@@ -847,6 +855,8 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 
 ## **ACTIVATE CARD**
 
+**This method can be used once for initial activation of the card**
+
 **REQUEST METHOD : `Post`**/card/activate
 
 **Must include in header Authentication : Bearer ... with 'OWNER','MANAGER','CASHIER' ROLE**
@@ -862,6 +872,7 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 **RESPONSE**
 
     {
+	"transactionId": 20,
     "serialNumber": "111",
     "startDate": "2024-10-15",
     "endDate": "2025-08-15",
@@ -898,6 +909,27 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
     {
         "serial": "07",
         "status": "Deactivate"
+    }
+
+## **RESTORE CARD**
+
+**REQUEST METHOD : `Get`**/card/restore
+
+**This method must be used to chane the status of the card to active after deactivation**
+
+**Must include in header Authentication : Bearer ... with 'OWNER','MANAGER' ROLE**
+
+**Request params** 
+
+| Parameter  | Type   | Description           |Required | Example         |
+| :---       | :---   | :---       			  | :---    | :---	          |
+| `serial`   | String   |Card serial number. | YES | "12345666"|
+
+**RESPONSE**
+
+    {
+        "serial": "07",
+        "status": "Success"
     }
 
 ## **Edit Card's list of forbidden branches**
@@ -982,6 +1014,7 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 **RESPONSE**
     
     {
+	"transactionId": 0,
     "serialNumber": "12345666",
     "startDate": "2024-10-15",
     "endDate": "2025-08-15",
@@ -1035,6 +1068,7 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 
     [
     {
+		"transactionId": 0,
         "serialNumber": "111",
         "startDate": "2024-10-15",
         "endDate": "2025-08-15",
@@ -1054,6 +1088,7 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
         "used": false
     },
     {
+		"transactionId": 0,
         "serialNumber": "11",
         "startDate": "2024-10-30",
         "endDate": "2025-01-30",
@@ -1085,7 +1120,10 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 | Parameter  | Type   | Description           |Required | Example         |
 | :---       | :---   | :---       			  | :---    | :---	          |
 | `serial`   | String   |Card serial number. | YES | "10"|
-| `amount`   | double   |Amount to spend from card. | YES | 6.60|
+| `amount`   | double   |Amount to spend from card. | YES | 6.60| 
+| `billAsText`   | String   |Text representation of the bill | NO | "Bill text here"|
+
+**Using JSON Body is NOT Require and can be skipped**
 
 **Request body of type JSON**
 
@@ -1140,6 +1178,7 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 **RESPONSE**
 
     {
+	"transactionId": 27,
     "serialNumber": "222111",
     "startDate": "2024-11-15",
     "endDate": "2025-05-15",
@@ -1155,6 +1194,43 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
     "vname": "hmmm",
     "rechargeable": true,
     "reusable": true,
+    "cashBack": false,
+    "used": false
+    }
+
+## **Refund amount to CARD**
+
+**REQUEST METHOD : `Post`**/card/refund
+
+**Must include in header Authentication : Bearer ... with 'OWNER','MANAGER','CASHIER' ROLE**
+
+**Request params** 
+
+| Parameter  | Type   | Description           |Required | Example         |
+| :---       | :---   | :---       			  | :---    | :---	          |
+| `serial`   | String   |Card serial number. | YES | "10"|
+| `referralTransId`   | Long   |Id of the Spend transaction. | YES | 1234567|
+| `amount`   | double   |Amount to deposit in card. | YES | 6.60|
+
+**RESPONSE**
+    
+    {
+	"transactionId": 28,
+    "serialNumber": "1",
+    "startDate": "2025-01-06",
+    "endDate": "2025-07-06",
+    "validMonths": 6,
+    "startAmount": 50.00,
+    "amountBeforeOperation": 103.00,
+    "currentAmount": 104.00,
+    "cashbackAmount": 0,
+    "limitPerDay": 0.00,
+    "groupName": "Test",
+    "forbiddenObjects": [],
+    "active": true,
+    "rechargeable": true,
+    "reusable": true,
+    "vname": "hmmm",
     "cashBack": false,
     "used": false
     }
@@ -1218,7 +1294,7 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 | `groupList`   | List<Int>   | List of group ids to use as filter | NO | [5,6,7]|
 | `operList`   | List<Int>   | List of operator ids to use as filter | No | [22,66,78]|
 | `filterCardSerial`   | String   | Card serial to use as filter. Uses wild cards and will return every card with matching to input serial | NO | "123123"|
-| `startDate`   | int   | Filter transactions between start and end Dates | NO | "2024-10-30"|
+| `startDate`   | String   | Filter transactions between start and end Dates | NO | "2024-10-30"|
 | `endDate`   | String   | Filter transactions between start and end Dates | NO | "2025-01-30"|
 
 **RESPONSE**
@@ -1283,7 +1359,7 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 | `groupList`   | List<Int>   | List of group ids to use as filter | NO | [5,6,7]|
 | `operList`   | List<Int>   | List of operator ids to use as filter | YES | [22,66,78]|
 | `filterCardSerial`   | String   | Card serial to use as filter. Uses wild cards and will return every card with matching to input serial | NO | "123123"|
-| `startDate`   | int   | Filter transactions between start and end Dates | NO | "2024-10-30"|
+| `startDate`   | String   | Filter transactions between start and end Dates | NO | "2024-10-30"|
 | `endDate`   | String   | Filter transactions between start and end Dates | NO | "2025-01-30"|
 
 **RESPONSE**
@@ -1337,7 +1413,7 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 
 ## *Get available transactions type*
 
-**REQUEST METHOD : `Post`**/report/getTransTypes
+**REQUEST METHOD : `Get`**/report/getTransTypes
 
 **Must include in header Authentication : Bearer ... with 'OWNER','MANAGER','OBSERVER' ROLE**
 
@@ -1392,6 +1468,70 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
     ]
     }
 
+## *Get Revision version for Users*
+
+**REQUEST METHOD : `Get`**/report/getUserRevisions
+
+**Must include in header Authentication : Bearer ... with 'MANAGER','OWNER' ROLE**
+
+**Request params** 
+
+| Parameter  | Type   | Description           |Required | Example         |
+| :---       | :---   | :---       			  | :---    | :---	          |
+| `userId`   | Int   | Id of the User | YES | 112231|
+| `startDate`   | String   | Filter transactions between start and end Dates | NO | "2025-01-01"|
+| `endDate`   | String   | Filter transactions between start and end Dates | NO | "2025-01-30"|
+
+
+> **Start date and end date are replaced with a very early date and the last date available if not supplied.**
+
+**RESPONSE**
+
+	{
+    "count": 3,
+    "userRevisionDTO": [
+        {
+            "revId": 1,
+            "revType": 1,
+            "name": "cash",
+            "defSubObjId": 2,
+            "revDateTime": "09 януари 2025 16:17:05",
+            "active": true,
+            "cashier": true,
+            "observer": true,
+            "manager": false,
+            "admin": false,
+            "accountOwner": false
+        },
+        {
+            "revId": 2,
+            "revType": 1,
+            "name": "cash",
+            "defSubObjId": 4,
+            "revDateTime": "09 януари 2025 16:20:11",
+            "active": true,
+            "cashier": true,
+            "observer": true,
+            "manager": false,
+            "admin": false,
+            "accountOwner": false
+        },
+        {
+            "revId": 52,
+            "revType": 1,
+            "name": "cashNew",
+            "defSubObjId": 4,
+            "revDateTime": "13 януари 2025 11:20:03",
+            "active": true,
+            "cashier": true,
+            "observer": false,
+            "manager": false,
+            "admin": false,
+            "accountOwner": false
+        }
+    ]
+	}
+
 # Error handling
 
 When an error occurs, the API returns a structured JSON response. Below is an example of a typical error response:
@@ -1431,6 +1571,7 @@ Error Response Fields:
 | `JWT_TOKEN_EXPIRED`   | 500   | JWT Token expired.<br>Start a new session<br> |
 | `INVALID_PAGE_INDEX_OR_SIZE`   | 400   | The number of the page or the size is invalid! |
 | `INVALID_FIELD_INPUT`   | 400   | Input data is invalid.<br>Boolean data must be 0 or 1<br> |
+| `RESOURCE_STATUS_UNCHANGED`   | 400   | Trying to change the status with the same status! |
 
 ----------	
 ### User Errors
@@ -1476,6 +1617,7 @@ Error Response Fields:
 | `CARD_VALIDITY_EXPIRED`   | 403   | Card is expired. |
 | `CARD_LIMIT_EXCEEDED`   | 403   | Card day spend limit is exceeded. |
 | `PARTIAL_PAYMENT_NOT_ALLOWED`   | 403   | No partial payments allowed with this card. |
+| `REFUND_EXCEEDING_AMOUNT`   | 403   | The amount being refunded is larger than the un refunded amount from the transaction. |
 
 ### Transaction Errors
 ----------
