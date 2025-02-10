@@ -68,6 +68,42 @@ API to manage the workflow of using custom vouchers in different trading shops.
     }
 
 ----------
+
+## Log in POS
+**REQUEST METHOD : `POST`**/login/pos
+
+> Method used to log in from a Point of sale 
+
+> subObjId is Required in this method !
+
+***Reqest body of type JSON***
+
+    {
+    "userName" : "test",
+    "userPass" : "testingPassword",
+	"subObjId" : 10
+    }
+
+**Request body params** 
+
+| Parameter  | Type   | Description           |Required | Example         |
+| :---       | :---   | :---       			  | :---    | :---	          |
+| `userName`   | String   | The username of the user trying to log in. | YES | "test"|
+| `userPass`   | String   | The password for the user account. | YES | "test"|
+| `subObjId`   | Long   | (Optional) The ID of the sub-object or branch the user<br>is trying to log in to. If left blank or not provided,<br>the system will use the user's default sub-object.<br> | YES | 2|
+
+**RESPONSE**
+
+    {
+    "userToken": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwidXNlciI6IkVsdHJhZGUiLCJhZG1pbiI6dHJ1ZSwibWFuYWdlciI6dHJ1ZSwiY2FzaGllciI6dHJ1ZSwib2JzZXJ2ZXIiOnRydWUsImV4cCI6MTcyMTIwNDc1M30.hAvIOc_YiceibHiRt5r2ARdz06yX2HVE_EJl663GV54",
+    "userRoles": [
+    "CASHIER"
+    ],
+    "userName": "Eltrade"
+    }
+
+----------
+
 # USER
 
 ## **Create Owner**
@@ -80,6 +116,7 @@ API to manage the workflow of using custom vouchers in different trading shops.
 
     {
     "name" : "myUserName",
+	"displayName," : "Ivan",
     "password" : "myStrongPassword",
     "accEIK" : "832076302",
     "accBulstat" : "BG832076302",
@@ -269,6 +306,7 @@ Created user will be automatically assigned to the Company of the user who's cre
     {
 		"id": 29,
         "name": "Eltrade",
+		"displayName," : "Ivan",
         "defObjId": 1,
         "companyId": 1,
         "userRoles": [
@@ -284,6 +322,7 @@ Created user will be automatically assigned to the Company of the user who's cre
     {
 		"id": 28,
         "name": "owner",
+		"displayName," : "Petar",
         "defObjId": 4,
         "companyId": 2,
         "userRoles": [
@@ -298,6 +337,7 @@ Created user will be automatically assigned to the Company of the user who's cre
     {
 		"id": 27,
         "name": "owner1",
+		"displayName," : "Ivan",
         "defObjId": 3,
         "companyId": 3,
         "userRoles": [
@@ -330,6 +370,7 @@ Created user will be automatically assigned to the Company of the user who's cre
     {
 	"id": 29,
     "name": "1",
+	"displayName," : "Ivan",
     "defObjId": 1,
 	"companyId": 2,
     "userRoles": [
@@ -344,6 +385,7 @@ Created user will be automatically assigned to the Company of the user who's cre
     {
 	"id": 28,
     "name": "manager2",
+	"displayName," : "Ivan",
     "defObjId": 1,
 	"companyId": 2,
     "userRoles": [
@@ -358,6 +400,7 @@ Created user will be automatically assigned to the Company of the user who's cre
     {
 	"id": 27,
     "name": "manager1",
+	"displayName," : "Ivan",
     "defObjId": 1,
 	"companyId": 2,
     "userRoles": [
@@ -369,6 +412,7 @@ Created user will be automatically assigned to the Company of the user who's cre
     {
 	"id": 26,
     "name": "manager3",
+	"displayName," : "Dragan",
     "defObjId": 1,
 	"companyId": 2,
     "userRoles": [
@@ -415,6 +459,7 @@ Created user will be automatically assigned to the Company of the user who's cre
     {
 	"userToEdit" : "existingUserName",
     "newName" : "myNewCashier",
+	""displayName," : "newDisplayName",
     "newPassword" : "myNewStrongPassword",
 	"isAdmin" : 0,
 	"isManager" : 0,
@@ -1177,26 +1222,82 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 
 **RESPONSE**
 
+	{
+    "cardResponseDTO": {
+        "transactionId": 54,
+        "serialNumber": "1",
+        "startDate": "2025-01-06",
+        "endDate": "2025-07-06",
+        "validMonths": 6,
+        "startAmount": 50.00,
+        "amountBeforeOperation": 46.00,
+        "currentAmount": 41.00,
+        "cashbackAmount": 0,
+        "limitPerDay": 0.00,
+        "groupName": "Test",
+        "forbiddenObjects": [],
+        "active": true,
+        "cashBack": false,
+        "reusable": true,
+        "vname": "hmmm",
+        "rechargeable": true,
+        "used": false
+    },
+    "billData": [
+        {
+            "type": "BillData",
+            "status": "Success",
+            "errMsg": "No Bill data supplied"
+        },
+        {
+            "type": "BillText",
+            "status": "Success",
+            "errMsg": "No errors"
+        }
+    ]
+	}
+
+## **Add Bill Data**
+
+**REQUEST METHOD : `Post`**/card/addBillData
+
+**Must include in header Authentication : Bearer ... with 'OWNER','MANAGER','CASHIER' ROLE**
+
+**Request params** 
+
+| Parameter  | Type   | Description           |Required | Example         |
+| :---       | :---   | :---       			  | :---    | :---	          |
+| `serial`   | String   |Card serial number. | YES | "10"|
+| `transactionId`   | Integer   |Amount to spend from card. | YES | 52| 
+| `billAsText`   | String   |Text representation of the bill | NO | "Bill text here"|
+
+**Request body of type JSON**
+
+----------
+
+**!!! SAME JSON BODY TYPE AND PARAMETERS AS IN SPEND CARD METHOD!!!**
+
+**Using JSON Body is NOT Require and can be skipped**
+
+**Bill text and bill data can be added separetely**
+
+----------
+
+**RESPONSE**
+
+	[
     {
-	"transactionId": 27,
-    "serialNumber": "222111",
-    "startDate": "2024-11-15",
-    "endDate": "2025-05-15",
-    "validMonths": 6,
-    "startAmount": 50.0,
-    "amountBeforeOperation": 55.0,
-    "currentAmount": 48.4,
-    "cashbackAmount": 0.0,
-    "limitPerDay": 0.0,
-    "groupName": "Test",
-    "forbiddenObjects": [],
-    "active": true,
-    "vname": "hmmm",
-    "rechargeable": true,
-    "reusable": true,
-    "cashBack": false,
-    "used": false
+        "type": "BillData",
+        "status": "Success",
+        "errMsg": "No errors"
+    },
+    {
+        "type": "BillText",
+        "status": "Fail",
+        "errMsg": "Error billText data for this transaction exists!"
     }
+	]
+
 
 ## **Refund amount to CARD**
 
@@ -1211,6 +1312,8 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 | `serial`   | String   |Card serial number. | YES | "10"|
 | `referralTransId`   | Long   |Id of the Spend transaction. | YES | 1234567|
 | `amount`   | double   |Amount to deposit in card. | YES | 6.60|
+
+**Request body of type JSON**
 
 **RESPONSE**
     
