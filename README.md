@@ -1483,35 +1483,61 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 | :---       | :---   | :---       			  | :---    | :---	          |
 | `transId`   | Int   | Id of the transaction | YES | 112231|
 
-**RESPONSE**
+**RESPONSE with Data**
 
 	{
-    "billId": 1,
-    "billAmount": 6.6,
-    "billDate": "2025-17-10",
-    "billNumber": "123551233123",
-    "billTransactionId": "1112233",
-    "billPaymentType": "Card",
-    "billUnp": "UNP1223AE11231231231",
-    "billDateTime": "06 декември 2024 10:43:32",
-    "itemList": [
-        {
-            "itemName": "Домат",
-            "itemBarcode": "",
-            "itemGroup": "Зеленчуци",
-            "itemDiscount": 0.0,
-            "itemPrice": 4.8,
-            "itemQuant": 2.3
-        },
-        {
-            "itemName": "Репички",
-            "itemBarcode": "",
-            "itemGroup": "Зеленчуци",
-            "itemDiscount": 0.0,
-            "itemPrice": 1.8,
-            "itemQuant": 1.0
+    "itemStatusResponseDTO": {
+        "type": "BillData",
+        "status": "Available",
+        "billResponseDTO": {
+            "billId": 1,
+            "billAmount": 6.6,
+            "billDate": "2025-17-10",
+            "billNumber": "123551233123",
+            "billTransactionId": "1112233",
+            "billPaymentType": "Card",
+            "billUnp": "UNP1223AE11231231231",
+            "billDateTime": "12 февруари 2025 10:38:03",
+            "itemList": [
+                {
+                    "itemName": "Домат",
+                    "itemBarcode": "",
+                    "itemGroup": "Зеленчуци",
+                    "itemDiscount": 0.0,
+                    "itemPrice": 4.8,
+                    "itemQuant": 2.3
+                },
+                {
+                    "itemName": "Репички",
+                    "itemBarcode": "",
+                    "itemGroup": "Зеленчуци",
+                    "itemDiscount": 0.0,
+                    "itemPrice": 1.8,
+                    "itemQuant": 1.0
+                }
+            ]
         }
-    ]
+    },
+    "textStatusResponseDTO": {
+        "type": "BillText",
+        "status": "Available",
+        "billText": "TESTTETETETETE"
+    }
+	}
+
+**RESPONSE NO bill Data**
+
+	{
+    "itemStatusResponseDTO": {
+        "type": "BillData",
+        "status": "Unavailable",
+        "billResponseDTO": null
+    },
+    "textStatusResponseDTO": {
+        "type": "BillText",
+        "status": "Unavailable",
+        "billText": null
+    }
 	}
 
 ## *Get available transactions type*
