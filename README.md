@@ -1661,6 +1661,130 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
     ]
 	}
 
+**REQUEST METHOD : `Get`**/report/getTransWithoutBillData
+
+**Must include in header Authentication : Bearer ... with 'MANAGER','OWNER','CASHIER' ROLE**
+
+**Request params** 
+
+| Parameter  | Type   | Description           |Required | Example         |
+| :---       | :---   | :---       			  | :---    | :---	          |
+| `page`   | int   | Page number. | YES | 0|
+| `size`   | int   | Records per page to show. | YES | 10|
+| `subObjId`   | Int   | Id Branch | YES | 112231|
+| `startTime`   | String   | Filter transactions between start and end Dates | YES | "2025-02-12T08:59:11.000"|
+| `endTime`   | String   | Filter transactions between start and end Dates | YES | "2025-02-12T14:20:11.000"|
+
+**RESPONSE**
+
+> "count" holds the total number of transactions without Bill data for the selected period
+
+> Two transactions are available in this example since the call was made with page : 0 and size : 2
+
+	{
+    "count": 3,
+    "transactionDataList": [
+        {
+            "transactionId": 39,
+            "transactionTime": "12 февруари 2025 10:37:53",
+            "transactionAmount": 5.00,
+            "transactionType": "S",
+            "cardData": {
+                "transactionId": 0,
+                "serialNumber": "212121",
+                "startDate": "2025-02-11",
+                "endDate": "2025-08-11",
+                "validMonths": 6,
+                "startAmount": 50.00,
+                "amountBeforeOperation": 130.00,
+                "currentAmount": 130.00,
+                "cashbackAmount": 0,
+                "limitPerDay": 0.00,
+                "groupName": "Test",
+                "forbiddenObjects": [],
+                "active": true,
+                "rechargeable": true,
+                "reusable": true,
+                "vname": "hmmm",
+                "cashBack": false,
+                "used": false
+            },
+            "branchData": {
+                "objId": 2,
+                "name": "Централен офис",
+                "city": "Sofiq",
+                "address": "Sofiq M.Luisa 100",
+                "description": "Управление",
+                "active": true
+            },
+            "operatorData": {
+                "id": 2,
+                "name": "1",
+                "displayName": "",
+                "defObjId": 2,
+                "companyId": 2,
+                "userRoles": [
+                    "MANAGER",
+                    "OWNER",
+                    "CASHIER",
+                    "OBSERVER"
+                ],
+                "forbiddenObjList": [],
+                "active": true
+            }
+        },
+        {
+            "transactionId": 40,
+            "transactionTime": "12 февруари 2025 11:59:14",
+            "transactionAmount": 5.00,
+            "transactionType": "S",
+            "cardData": {
+                "transactionId": 0,
+                "serialNumber": "212121",
+                "startDate": "2025-02-11",
+                "endDate": "2025-08-11",
+                "validMonths": 6,
+                "startAmount": 50.00,
+                "amountBeforeOperation": 130.00,
+                "currentAmount": 130.00,
+                "cashbackAmount": 0,
+                "limitPerDay": 0.00,
+                "groupName": "Test",
+                "forbiddenObjects": [],
+                "active": true,
+                "rechargeable": true,
+                "reusable": true,
+                "vname": "hmmm",
+                "cashBack": false,
+                "used": false
+            },
+            "branchData": {
+                "objId": 2,
+                "name": "Централен офис",
+                "city": "Sofiq",
+                "address": "Sofiq M.Luisa 100",
+                "description": "Управление",
+                "active": true
+            },
+            "operatorData": {
+                "id": 2,
+                "name": "1",
+                "displayName": "",
+                "defObjId": 2,
+                "companyId": 2,
+                "userRoles": [
+                    "MANAGER",
+                    "OWNER",
+                    "CASHIER",
+                    "OBSERVER"
+                ],
+                "forbiddenObjList": [],
+                "active": true
+            }
+        }
+    ]
+	}
+
 # Error handling
 
 When an error occurs, the API returns a structured JSON response. Below is an example of a typical error response:
