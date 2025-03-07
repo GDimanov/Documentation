@@ -848,10 +848,10 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
         "validMonths": 3,
         "startAmount": 500,
         "limitPerDay": 0.0,
-        "isActive" : 1,
-        "isRechargeable": 1,
-        "isReusable": 1,
-        "isCashBack": 0,
+        "active" : 1,
+        "rechargeable": 1,
+        "reusable": 1,
+        "cashBack": 0,
         "groupName": "Test",
         "cardName" : "CardA",
         "forbiddenObjects": []
@@ -866,10 +866,10 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 | `validMonths`   | int   | Valid will set the end date by adding this value to the startDate.<br>Set 0 to use company default.<br> | YES | 6|
 | `startAmount`   | Double   | Amoun to initialy load in card. | NO | 100|
 | `limitPerDay`   | Double   | Sets limit avaialble to spend each day. | YES | 100|
-| `isActive`   | int   | Set if card is active.<br>integer values 0 - False, 1 - True<br> | YES | 1|
-| `isRechargeable`   | int   | Set if card is Rechargeable.<br>integer values 0 - False, 1 - True<br> | YES | 1|
-| `isReusable`   | int   | Set if card is Reusable.<br>integer values 0 - False, 1 - True<br> | YES | 1|
-| `isCashBack`   | int   | Set if card can benefit from Cashbacks.<br>integer values 0 - False, 1 - True<br> | YES | 0|
+| `active`   | int   | Set if card is active.<br>integer values 0 - False, 1 - True<br> | YES | 1|
+| `rechargeable`   | int   | Set if card is Rechargeable.<br>integer values 0 - False, 1 - True<br> | YES | 1|
+| `reusable`   | int   | Set whether the card is reusable. A non-reusable card is treated as a Voucher<br> and must be used only once, with the spent amount being equal to or less than the requested transaction amount.<br>integer values 0 - False, 1 - True<br> | YES | 1|
+| `cashBack`   | int   | Set if card can benefit from Cashbacks.<br>integer values 0 - False, 1 - True<br> | YES | 0|
 | `cardName`   | String   | Optional name of the Card. | NO | "MyCard"|
 | `forbiddenObjects`   | List<long>   | A list of IDs representing the branches that should be marked as forbidden for the card. | YES | 101,102,103|
 
@@ -912,30 +912,30 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 | :---       | :---   | :---       			  | :---    | :---	          |
 | `serial`   | String   |Card serial number. | YES | "12345666"|
 | `months`   | int   | Card validity in months.<br>If skipped default value for company will be used<br> | NO | 10|
-| `amount`   | Double   |Amount to load in card upon activation.<br>If the card already has an existing balance from its creation method,<br>the two balances will be summed together. | YES | "12345666"|
 
 **RESPONSE**
 
-    {
-	"transactionId": 20,
-    "serialNumber": "111",
-    "startDate": "2024-10-15",
-    "endDate": "2025-08-15",
-    "validMonths": 10,
-    "startAmount": 500.0,
-	"amountBeforeOperation": 0,
-    "currentAmount": 500.0,
-	"cashbackAmount": 0.0,
-    "limitPerDay": 0.0,
+	{
+    "transactionId": 0,
+    "serialNumber": "1",
+    "startDate": "2025-02-27",
+    "endDate": "2026-02-27",
+    "validMonths": 12,
+    "startAmount": 0.00,
+    "amountBeforeOperation": 0.00,
+    "currentAmount": 0.00,
+    "cashbackAmount": 0,
+    "limitPerDay": 0.00,
+    "initiated": true,
     "groupName": "Test",
     "forbiddenObjects": [],
-    "cardName": "",
     "active": true,
-    "rechargeable": true,
     "cashBack": false,
-    "reusable": true,
+    "rechargeable": false,
+    "reusable": false,
+    "vname": "hmmm",
     "used": false
-}
+	}
 
 ## **DEACTIVATE CARD**
 
@@ -1069,6 +1069,7 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
     "currentAmount": 500.0,
 	"cashbackAmount": 0.0,
     "limitPerDay": 0.0,
+    "initiated": true,
     "groupName": "Test",
     "forbiddenObjects": [],
     "cardName": "",
@@ -1123,6 +1124,7 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
         "currentAmount": 500.0,
 		"cashbackAmount": 0.0,
         "limitPerDay": 0.0,
+    	"initiated": true,
         "groupName": "Test",
         "forbiddenObjects": [],
         "cardName": "",
@@ -1143,6 +1145,7 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
         "currentAmount": 500.0,
 		"cashbackAmount": 0.0,
         "limitPerDay": 0.0,
+    	"initiated": true,
         "groupName": "Test",
         "forbiddenObjects": [],
         "cardName": "",
@@ -1234,6 +1237,7 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
         "currentAmount": 41.00,
         "cashbackAmount": 0,
         "limitPerDay": 0.00,
+	    "initiated": true,
         "groupName": "Test",
         "forbiddenObjects": [],
         "active": true,
@@ -1328,6 +1332,7 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
     "currentAmount": 104.00,
     "cashbackAmount": 0,
     "limitPerDay": 0.00,
+    "initiated": true,
     "groupName": "Test",
     "forbiddenObjects": [],
     "active": true,
@@ -1363,6 +1368,7 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
     "currentAmount": 200.0,
 	"cashbackAmount": 0.0,
     "limitPerDay": 0.0,
+    "initiated": true,
     "groupName": "Test",
     "forbiddenObjects": [],
 	"cardName": "",
@@ -1418,6 +1424,7 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
             "currentAmount": 43.4,
             "cashbackAmount": 0.0,
             "limitPerDay": 0.0,
+		    "initiated": true,
             "groupName": "Test",
             "forbiddenObjects": [],
             "active": true,
@@ -1869,6 +1876,7 @@ Error Response Fields:
 | `CARD_IS_INACTIVE`   | 400   | This card is inactive and can not be used. |
 | `CARD_VALIDITY_EXPIRED`   | 403   | Card is expired. |
 | `CARD_LIMIT_EXCEEDED`   | 403   | Card day spend limit is exceeded. |
+| `CARD_ALREADY_USED`   | 403   | This card can be used once!And it has already been used. |
 | `PARTIAL_PAYMENT_NOT_ALLOWED`   | 403   | No partial payments allowed with this card. |
 | `REFUND_EXCEEDING_AMOUNT`   | 403   | The amount being refunded is larger than the un refunded amount from the transaction. |
 
