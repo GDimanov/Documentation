@@ -912,6 +912,7 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 | :---       | :---   | :---       			  | :---    | :---	          |
 | `serial`   | String   |Card serial number. | YES | "12345666"|
 | `months`   | int   | Card validity in months.<br>If skipped default value for company will be used<br> | NO | 10|
+| `init`   | int   | Default vlue is set to 1 and the card will be activated and initiated.Set to 0 to used addBillData endpoint to initiate the card | NO | 1|
 
 **RESPONSE**
 
@@ -1274,6 +1275,7 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 | `serial`   | String   |Card serial number. | YES | "10"|
 | `transactionId`   | Integer   |Amount to spend from card. | YES | 52| 
 | `billAsText`   | String   |Text representation of the bill | NO | "Bill text here"|
+| `init`   | int   | Default vlue is set to 0 no attempt to initiate the card will be made.Set to 1 to used initiate the card only if the initialization was skipped at the activation part!| NO | 0|
 
 **Request body of type JSON**
 
@@ -1555,54 +1557,66 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 
 **RESPONSE**
 
-    {
+	{
     "transList": [
-    {
-    "transName": "CREATE",
-    "transCode": "C"
-    },
-    {
-    "transName": "ACTIVATE",
-    "transCode": "A"
-    },
-    {
-    "transName": "DEACTIVATE",
-    "transCode": "D"
-    },
-    {
-    "transName": "SPEND",
-    "transCode": "S"
-    },
-    {
-    "transName": "Deposit",
-    "transCode": "De"
-    },
-    {
-    "transName": "Withdraw",
-    "transCode": "W"
-    },
-    {
-    "transName": "INFO",
-    "transCode": "I"
-    },
-    {
-    "transName": "EDIT_LIMIT",
-    "transCode": "EL"
-    },
-    {
-    "transName": "EDIT_GROUP",
-    "transCode": "EG"
-    },
-    {
-    "transName": "EDIT_BRANCH",
-    "transCode": "EB"
-    },
-    {
-    "transName": "EDIT_DATE",
-    "transCode": "ED"
-    }
+        {
+            "transName": "CREATE",
+            "transCode": "C"
+        },
+        {
+            "transName": "ACTIVATE",
+            "transCode": "A"
+        },
+        {
+            "transName": "DEACTIVATE",
+            "transCode": "D"
+        },
+        {
+            "transName": "RESTORE",
+            "transCode": "R"
+        },
+        {
+            "transName": "SPEND",
+            "transCode": "S"
+        },
+        {
+            "transName": "Deposit",
+            "transCode": "De"
+        },
+        {
+            "transName": "Withdraw",
+            "transCode": "W"
+        },
+        {
+            "transName": "INFO",
+            "transCode": "I"
+        },
+        {
+            "transName": "EDIT_LIMIT",
+            "transCode": "EL"
+        },
+        {
+            "transName": "EDIT_GROUP",
+            "transCode": "EG"
+        },
+        {
+            "transName": "EDIT_BRANCH",
+            "transCode": "EB"
+        },
+        {
+            "transName": "EDIT_DATE",
+            "transCode": "ED"
+        },
+        {
+            "transName": "REFUND",
+            "transCode": "RF"
+        },
+        {
+            "transName": "INITIATE",
+            "transCode": "IN"
+        }
     ]
-    }
+	}
 
 ## *Get Revision version for Users*
 
