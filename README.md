@@ -7,19 +7,21 @@ API to manage the workflow of using custom vouchers in different trading shops.
 
 [1. Authentication](#log-in)
 
-[2. User managing](#user)
+[2. Billing](#billing)
 
-[3. Company managing](#company)
+[3. User managing](#user)
 
-[4. Branch managing](#subObject)
+[4. Company managing](#company)
 
-[5. Groups](#groups)
+[5. Branch managing](#subObject)
 
-[6. Card](#card)
+[6. Groups](#groups)
 
-[7. Report](#report)
+[7. Card](#card)
 
-[8. Error handling](#error-handling)
+[8. Report](#report)
+
+[9. Error handling](#error-handling)
 
 ## DATA FORMATS 
 
@@ -69,37 +71,50 @@ API to manage the workflow of using custom vouchers in different trading shops.
 
 ----------
 
-## Log in POS
-**REQUEST METHOD : `POST`**/login/pos
+# Billing 
 
-> Method used to log in from a Point of sale 
+## **Get data for registered Cash points**
 
-> subObjId is Required in this method !
+**REQUEST METHOD : `GET`**/billing/getValidityData
 
-***Reqest body of type JSON***
-
-    {
-    "userName" : "test",
-    "userPass" : "testingPassword",
-	"subObjId" : 10
-    }
+- **Must include in header Authentication : Bearer ... with 'ADMIN','OWNER','MANAGER' ROLE**
 
 **Request body params** 
 
 | Parameter  | Type   | Description           |Required | Example         |
 | :---       | :---   | :---       			  | :---    | :---	          |
-| `userName`   | String   | The username of the user trying to log in. | YES | "test"|
-| `userPass`   | String   | The password for the user account. | YES | "test"|
-| `subObjId`   | Long   | (Optional) The ID of the sub-object or branch the user<br>is trying to log in to. If left blank or not provided,<br>the system will use the user's default sub-object.<br> | YES | 2|
+| `companyEIK`   | Integer   | Compay EIK | YES | 8202626260|
+| `userName`   | String   | If supplied will only return the results of this cash point | NO | "MyCashPoint"|
+
+**RESPONSE**
+
+	[
+    {
+        "cashModule": "Georgito",
+        "cashModuleName": "Моя касиер",
+        "validUntilDate": "2025-11-01"
+    }
+	]
+
+## Set new validity date**
+
+**REQUEST METHOD : `POST`**/billing/setValidity
+
+- **Must include in header Authentication : Bearer ... with 'ADMIN'
+
+***Request body of type JSON***
+
+	{
+    "cashModule" : "Georgito",
+    "validUntilDate" : "2025-11-01"
+	}
 
 **RESPONSE**
 
     {
-    "userToken": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwidXNlciI6IkVsdHJhZGUiLCJhZG1pbiI6dHJ1ZSwibWFuYWdlciI6dHJ1ZSwiY2FzaGllciI6dHJ1ZSwib2JzZXJ2ZXIiOnRydWUsImV4cCI6MTcyMTIwNDc1M30.hAvIOc_YiceibHiRt5r2ARdz06yX2HVE_EJl663GV54",
-    "userRoles": [
-    "CASHIER"
-    ],
-    "userName": "Eltrade"
+        "cashModule": "Georgito",
+        "cashModuleName": "Моя касиер",
+        "validUntilDate": "2025-11-01"
     }
 
 ----------
@@ -351,6 +366,34 @@ Created user will be automatically assigned to the Company of the user who's cre
     }
 ]
 
+## *Get company owner**
+
+**REQUEST METHOD : `GET`**/user/getCompanyOwner
+
+- **Must include in header Authentication : Bearer ... with 'ADMIN'ROLE**
+
+**Request params** 
+
+| Parameter  | Type   | Description           |Required | Example         |
+| :---       | :---   | :---       			  | :---    | :---	          |
+| `companyEIK`   | int   | Company EIK umber | YES | 0|
+
+
+**RESPONSE**
+
+	{
+    "id": 2,
+    "name": "GeorgiDD",
+    "displayName": "",
+    "defObjId": 2,
+    "companyId": 2,
+    "userRoles": [
+        "OWNER"
+    ],
+    "forbiddenObjList": [],
+    "active": true
+	}
+
 ## **List all users by Account owner**
 
 **REQUEST METHOD : `GET`**/user/viewAllUsersByAcc
@@ -515,6 +558,25 @@ Created user will be automatically assigned to the Company of the user who's cre
     {
     "status" : "Updated"
     }
+
+## **Resets the password of the selected owner**
+
+**REQUEST METHOD : `POST`**/user/resetOwnerPass
+
+- **Must include in header Authentication : Bearer ... with 'ADMIN' ROLE**
+
+**Request params** 
+
+| Parameter  | Type   | Description           |Required | Example         |
+| :---       | :---   | :---       			  | :---    | :---	          |
+| `name`     | String | User name of the account owner | YES | MyComanyOnwer@mail.bg|
+
+**RESPONSE**
+
+	{
+    "name": "MyComanyOnwer@mail.bg",
+    "newPass": "DW]G9903tZk"
+	}
 
 ----------
 # Company
@@ -804,7 +866,8 @@ Created user will be automatically assigned to the Company of the user who's cre
 ***Reqest body of type JSON***
 
 	{
-       "groupName": "BirthDay"
+       "groupName": "BirthDay",
+	   "groupComment": "Some text here"
     }
 
 **Request body params** 
@@ -827,12 +890,26 @@ Created user will be automatically assigned to the Company of the user who's cre
 
 **RESPONSE**
     
-    [
+[
     {
-    "groupId": 1,
-    "name": "Test"
+        "groupId": 1,
+        "name": "Test",
+        "comment": "Тестова Група!",
+        "cardsCount": 21
+    },
+    {
+        "groupId": 2,
+        "name": "Честит Рожден Ден",
+        "comment": "Най-добрата Група",
+        "cardsCount": 0
+    },
+    {
+        "groupId": 3,
+        "name": "New",
+        "comment": "New group here !",
+        "cardsCount": 1
     }
-    ]
+]
 
 # CARD
 
@@ -1382,6 +1459,43 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
     "cashBack": false
 	}
 
+## **Withdraw amount from CARD**
+
+**REQUEST METHOD : `Post`**/card/withdraw
+
+**Must include in header Authentication : Bearer ... with 'OWNER','MANAGER','CASHIER' ROLE**
+
+**Request params** 
+
+| Parameter  | Type   | Description           |Required | Example         |
+| :---       | :---   | :---       			  | :---    | :---	          |
+| `serial`   | String   |Card serial number. | YES | "10"|
+| `amount`   | double   |Amount to withdraw from card. | YES | 5|
+
+**RESPONSE**
+
+{
+    "transactionId": 14,
+    "serialNumber": "321",
+    "startDate": "2025-05-14",
+    "endDate": "2026-05-14",
+    "validMonths": 12,
+    "startAmount": 10.00,
+    "amountBeforeOperation": 30.00,
+    "currentAmount": 25.00,
+    "cashbackAmount": 0,
+    "limitPerDay": 0.00,
+    "initiated": true,
+    "groupName": "Test1",
+    "forbiddenObjects": [],
+    "active": true,
+    "rechargeable": true,
+    "vname": "hmmm",
+    "reusable": true,
+    "cashBack": false,
+    "used": false
+}
+
 # Report
 
 ## *Get Transactions report*
@@ -1686,13 +1800,17 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 
 **Must include in header Authentication : Bearer ... with 'MANAGER','OWNER','CASHIER' ROLE**
 
+    Important Notes
+    
+    - A filter is applied and transactions are retuned only for the requesting user.
+    
+
 **Request params** 
 
 | Parameter  | Type   | Description           |Required | Example         |
 | :---       | :---   | :---       			  | :---    | :---	          |
 | `page`   | int   | Page number. | YES | 0|
 | `size`   | int   | Records per page to show. | YES | 10|
-| `subObjId`   | Int   | Id Branch | YES | 112231|
 | `startTime`   | String   | Filter transactions between start and end Dates | YES | "2025-02-12T08:59:11.000"|
 | `endTime`   | String   | Filter transactions between start and end Dates | YES | "2025-02-12T14:20:11.000"|
 
@@ -1858,6 +1976,9 @@ Error Response Fields:
 | `NO_ACTIVE_COMPANY_ATTACHED`   | 403   | To perform this action the user<br>must be part of an active Company.<br> |
 | `INVALID_USER`  | 403   | Supplied user is invalid see errMsg for details |
 | `COMPANY_EXTRACTION_ERR`   | 400   | Supplied user has invalid company.<br>See errMsg for details<br> |
+| `INVALID_USERNAME`   | 403   | User must contain min 8 symbols and one upper case letter or a special symbol!<br> |
+| `INVALID_PASSWORD`   | 403   | Password must contain min 8 symbols a upper case letter and a special symbol!<br> |
+| `USER_VALIDITY_PERIOD_EXPIRED`   | 403   | User validity period expired<br> |
 
 ### Groups Errors
 ----------
@@ -1874,6 +1995,7 @@ Error Response Fields:
 | `COMPANY_EXPIRED`   | 403   | Payment renewal is required to extend the active period. |
 | `COMPANY_ALREADY_EXISTS`   | 403   | Company with this EIK is already in use! |
 | `INVALID_BRANCH`   | 400   | Fail while validating the branch status<br>See errMsg for details<br> |
+| `INVALID_EMAIL`   | 403   | The supplied E-mail address is invalid!<br> |
 
 ### CARD Errors
 ----------
