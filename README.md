@@ -66,7 +66,8 @@ API to manage the workflow of using custom vouchers in different trading shops.
     "CASHIER",
     "OBSERVER"
     ],
-    "userName": "Eltrade"
+    "userName": "Eltrade",
+    "expiresAt": "1758976767043"
     }
 
 ----------
@@ -578,6 +579,62 @@ Created user will be automatically assigned to the Company of the user who's cre
     "newPass": "DW]G9903tZk"
 	}
 
+## **Search user in database by name**
+
+**REQUEST METHOD : `GET`**/user/findByName
+
+- **Must include in header Authentication : Bearer ... with 'OWNER','MANAGER', 'ADMIN' ROLE**
+
+**Request params**
+
+| Parameter  | Type   | Description           |Required | Example |
+| :---       | :---   | :---       			  | :---    |:--------|
+| `name`     | String | User name of the account owner | YES | Potr    |
+
+**RESPONSE**
+
+	{[
+    {
+        "id": 2,
+        "name": "Potrebitel",
+        "displayName": "Zdravko",
+        "defObjId": 2,
+        "companyId": 2,
+        "userRoles": [
+            "MANAGER",
+            "OWNER",
+            "CASHIER",
+            "OBSERVER"
+        ],
+        "forbiddenObjList": [],
+        "active": true
+    },
+    {
+        "id": 4,
+        "name": "PotrebiteLL",
+        "displayName": "aaa",
+        "defObjId": 2,
+        "companyId": 2,
+        "userRoles": [
+            "MANAGER"
+        ],
+        "forbiddenObjList": [],
+        "active": true
+    },
+    {
+        "id": 5,
+        "name": "PotrebiteKK",
+        "displayName": "sas",
+        "defObjId": 2,
+        "companyId": 2,
+        "userRoles": [
+            "OBSERVER"
+        ],
+        "forbiddenObjList": [],
+        "active": true
+    }]
+
+
 ----------
 # Company
 
@@ -636,18 +693,17 @@ Created user will be automatically assigned to the Company of the user who's cre
 
 **Request params** 
 
-| Parameter  | Type   | Description           |Required | Example         |
-| :---       | :---   | :---       			  | :---    | :---	          |
-| `page`   | int   | Page number. | YES | 0|
-| `size`   | int   | Records per page to show. | YES | 10|
-| `companyEIK`   | int   | Filter buy comapny EIK | NO | 11223344|
-| `companyName`   | String   | Filter by company name | NO | Eltrade|
-| `companyEmail`   | String   | Filter by company e-mail | NO | eltrade@eltrade.com|
-| `companyCity`   | String   | Filter by company city | NO | Sofia|
-| `companyPhone`   | String   | Filter by company phone | NO | 818209|
-| `activeUntilDate`   | Date   | Filter will show companys that are active until the exact selected date | NO | 2025-01-01|
-| `fromDate`   | Date   | Filter will show companys between fromDate and toDate | NO | 2024-01-01|
-| `toDate`   | Date   | Filter will show companys between fromDate and toDate | NO | 2025-01-01|
+| Parameter  | Type   | Description                                                             |Required | Example         |
+| :---       | :---   |:------------------------------------------------------------------------| :---    | :---	          |
+| `page`   | int   | Page number.                                                            | YES | 0|
+| `size`   | int   | Records per page to show.                                               | YES | 10|
+| `companyEIK`   | int   | Filter buy comapny EIK                                                  | NO | 11223344|
+| `companyName`   | String   | Filter by company name                                                  | NO | Eltrade|
+| `companyEmail`   | String   | Filter by company e-mail                                                | NO | eltrade@eltrade.com|
+| `companyCity`   | String   | Filter by company city                                                  | NO | Sofia|
+| `companyPhone`   | String   | Filter by company phone                                                 | NO | 818209|
+| `fromDate`   | Date   | Filter will show companys from this date or between fromDate and toDate | NO | 2024-01-01|
+| `toDate`   | Date   | Filter will show companys to this date or between fromDate and toDate   | NO | 2025-01-01|
 
 **RESPONSE**
 
@@ -853,6 +909,31 @@ Created user will be automatically assigned to the Company of the user who's cre
     - will return the total Subobject count for the company of the user : 10 
     - If the user is 'ADMIN' will return the total user count ignoring the company : 24
 
+## **Search object in database by name**
+
+**REQUEST METHOD : `GET`**/subObject/findByName
+
+- **Must include in header Authentication : Bearer ... with 'OWNER','MANAGER' ROLE**
+
+**Request params**
+
+| Parameter  | Type   | Description           |Required | Example |
+| :---       | :---   |:----------------------| :---    |:--------|
+| `name`     | String | Name of the subobject | YES | Цен     |
+
+**RESPONSE**
+
+	[
+    {
+        "objId": 2,
+        "name": "Централен офис",
+        "city": "Botevgrad",
+        "address": "G.Delchev_102",
+        "description": "Управление",
+        "active": true
+    }
+]
+
 ----------
 # Groups
 
@@ -913,7 +994,7 @@ Created user will be automatically assigned to the Company of the user who's cre
 
 # CARD
 
-**REQUEST METHOD : `Post`**/card/createCard
+**REQUEST METHOD : `POST`**/card/createCard
 
 **Must include in header Authentication : Bearer ... with 'OWNER','MANAGER' ROLE**
 
@@ -979,7 +1060,7 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 
 **This method can be used once for initial activation of the card**
 
-**REQUEST METHOD : `Post`**/card/activate
+**REQUEST METHOD : `POST`**/card/activate
 
 **Must include in header Authentication : Bearer ... with 'OWNER','MANAGER','CASHIER' ROLE**
 
@@ -1017,7 +1098,7 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 
 ## **DEACTIVATE CARD**
 
-**REQUEST METHOD : `Get`**/card/deactivate
+**REQUEST METHOD : `GET`**/card/deactivate
 
 **Must include in header Authentication : Bearer ... with 'OWNER','MANAGER' ROLE**
 
@@ -1036,7 +1117,7 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 
 ## **RESTORE CARD**
 
-**REQUEST METHOD : `Get`**/card/restore
+**REQUEST METHOD : `GET`**/card/restore
 
 **This method must be used to chane the status of the card to active after deactivation**
 
@@ -1057,7 +1138,7 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 
 ## **Edit Card's list of forbidden branches**
 
-**REQUEST METHOD : `Post`**/card/editForbiddenList
+**REQUEST METHOD : `POST`**/card/editForbiddenList
 
 **Must include in header Authentication : Bearer ... with 'OWNER','MANAGER' ROLE**
 
@@ -1077,7 +1158,7 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 
 ## **Edit Card Group**
 
-**REQUEST METHOD : `Post`**/card/editGroup
+**REQUEST METHOD : `POST`**/card/editGroup
 
 **Must include in header Authentication : Bearer ... with 'OWNER','MANAGER' ROLE**
 
@@ -1097,7 +1178,7 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 
 ## **Edit Card daily sped limit**
 
-**REQUEST METHOD : `Post`**/card/editLimit
+**REQUEST METHOD : `POST`**/card/editLimit
 
 **Request params** 
 
@@ -1124,7 +1205,7 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 
 ## **GET CARD BY SERIAL**
 
-**REQUEST METHOD : `Get`**/card/getCardBySerial
+**REQUEST METHOD : `GET`**/card/getCardBySerial
 
 **Must include in header Authentication : Bearer ... with 'OWNER','MANAGER','CASHIER' ROLE**
 
@@ -1160,7 +1241,7 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 
 ## **GET CARD COUNT**
 
-**REQUEST METHOD : `Get`**/card/count
+**REQUEST METHOD : `GET`**/card/count
 
 **Must include in header Authentication : Bearer ... with 'OWNER','MANAGER' ROLE**
 
@@ -1170,24 +1251,25 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 
 ## **GET CARDS BY COMPANY**
 
-**REQUEST METHOD : `Get`**/card/getCompanyCards
+**REQUEST METHOD : `GET`**/card/getCompanyCards
 
 **Must include in header Authentication : Bearer ... with 'OWNER','MANAGER' ROLE**
 
 **Request params** 
 
-| Parameter  | Type   | Description           |Required | Example         |
-| :---       | :---   | :---       			  | :---    | :---	          |
-| `page`   | int   | Page number. | YES | 0|
-| `size`   | int   | Records per page to show. | YES | 10|
-| `onlyExpired`   | int   | Filter show only expired 0-false,1-true | NO | 0|
-| `onlyActive`   | int   | Filter show only active 0-false,1-true | NO | 10|
-| `onlyLimited`   | int   | Filter show only limited 0-false,1-true. | NO | 0|
-| `onlyUsed`   | int   | Filter show only used 0-false,1-true | NO | 10|
-| `startDate`   | int   | Show results between start and end date | NO | 0|
-| `endDate`   | int   | Show results between start and end date | NO | 10|
-| `groupFilter`   | String   | Show only in selected group | NO | 0|
-
+| Parameter      | Type   | Description                                                |Required | Example       |
+|:---------------| :---   |:-----------------------------------------------------------| :---    |:--------------|
+| `page`         | int   | Page number.                                               | YES | 0             |
+| `size`         | int   | Records per page to show.                                  | YES | 10            |
+| `onlyExpired`  | int   | Filter show only expired 0-false,1-true                    | NO | 0             |
+| `onlyActive`   | int   | Filter show only active 0-false,1-true                     | NO | 10            |
+| `onlyInactive` | int   | Filter show only inactive 0-false,1-true                   | NO | 10            |
+| `onlyLimited`  | int   | Filter show only limited 0-false,1-true.                   | NO | 0             |
+| `onlyUsed`     | int   | Filter show only used 0-false,1-true                       | NO | 10            |
+| `startDate`    | int   | Show results from start date or between start and end date | NO | 0             |
+| `endDate`      | int   | Show results to end date or between start and end date     | NO | 10            |
+| `groupFilter`  | String   | Show only in selected group                                | NO | 0             |
+| `direction`    | String   | Filter sort by desc / asc direction                        | NO | "asc" / "desc" |
 **RESPONSE**
 
     [
@@ -1237,7 +1319,7 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 
 ## **SPEND CARD**
 
-**REQUEST METHOD : `Post`**/card/spend
+**REQUEST METHOD : `POST`**/card/spend
 
 **Must include in header Authentication : Bearer ... with 'OWNER','MANAGER','CASHIER' ROLE**
 
@@ -1341,7 +1423,7 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 
 ## **Add Bill Data**
 
-**REQUEST METHOD : `Post`**/card/addBillData
+**REQUEST METHOD : `POST`**/card/addBillData
 
 **Must include in header Authentication : Bearer ... with 'OWNER','MANAGER','CASHIER' ROLE**
 
@@ -1384,7 +1466,7 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 
 ## **Refund amount to CARD**
 
-**REQUEST METHOD : `Post`**/card/refund
+**REQUEST METHOD : `POST`**/card/refund
 
 **Must include in header Authentication : Bearer ... with 'OWNER','MANAGER','CASHIER' ROLE**
 
@@ -1424,7 +1506,7 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 
 ## **Deposit amount to CARD**
 
-**REQUEST METHOD : `Post`**/card/deposit
+**REQUEST METHOD : `POST`**/card/deposit
 
 **Must include in header Authentication : Bearer ... with 'OWNER','MANAGER','CASHIER' ROLE**
 
@@ -1461,7 +1543,7 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 
 ## **Withdraw amount from CARD**
 
-**REQUEST METHOD : `Post`**/card/withdraw
+**REQUEST METHOD : `POST`**/card/withdraw
 
 **Must include in header Authentication : Bearer ... with 'OWNER','MANAGER','CASHIER' ROLE**
 
@@ -1496,11 +1578,90 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
     "used": false
 }
 
+## **Get start amounts in company cards**
+
+**REQUEST METHOD : `GET`**/card/getStartAmounts
+
+**Must include in header Authentication : Bearer ... with 'OWNER','MANAGER','CASHIER' ROLE**
+
+**RESPONSE**
+
+    1990.00
+
+## **Get current amounts in company cards**
+
+**REQUEST METHOD : `GET`**/card/getCurrentAmounts
+
+**Must include in header Authentication : Bearer ... with 'OWNER','MANAGER','CASHIER' ROLE**
+
+**RESPONSE**
+
+    1590.50
+
+## **Search card in database by serial number**
+
+**REQUEST METHOD : `GET`**/card/findBySerialNum
+
+- **Must include in header Authentication : Bearer ... with 'OWNER','MANAGER' ROLE**
+
+**Request params**
+
+| Parameter | Type   | Description               |Required | Example |
+|:----------| :---   |:--------------------------| :---    |:--------|
+| `serial`  | String | Serial number of the card | YES | 22202507231        |
+
+**RESPONSE**
+
+	[
+    {
+        "transactionId": 0,
+        "serialNumber": "22202507231324099581057",
+        "startDate": "2025-07-28",
+        "endDate": "2026-01-28",
+        "validMonths": 6,
+        "startAmount": 400.00,
+        "amountBeforeOperation": 0.00,
+        "currentAmount": 0.00,
+        "cashbackAmount": 0,
+        "limitPerDay": 0.00,
+        "initiated": true,
+        "groupName": "Tesy",
+        "forbiddenObjects": [],
+        "active": true,
+        "reusable": false,
+        "vname": "",
+        "used": true,
+        "cashBack": false,
+        "rechargeable": false
+    },
+    {
+        "transactionId": 0,
+        "serialNumber": "22202507231324226091101",
+        "startDate": "2025-07-23",
+        "endDate": "2026-10-23",
+        "validMonths": 15,
+        "startAmount": 200.00,
+        "amountBeforeOperation": 200.00,
+        "currentAmount": 200.00,
+        "cashbackAmount": 0,
+        "limitPerDay": 0.00,
+        "initiated": false,
+        "groupName": "Tesy",
+        "forbiddenObjects": [],
+        "active": false,
+        "reusable": false,
+        "vname": "",
+        "used": false,
+        "cashBack": false,
+        "rechargeable": false
+    }]
+----
+
 # Report
 
 ## *Get Transactions report*
 
-**REQUEST METHOD : `Post`**/report/getTransactions
+**REQUEST METHOD : `POST`**/report/getTransactions
 
 **Must include in header Authentication : Bearer ... with 'OWNER','MANAGER','OBSERVER' ROLE**
 
@@ -1510,6 +1671,7 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 | :---       | :---   | :---       			  | :---    | :---	          |
 | `page`   | int   | Page number. | YES | 0|
 | `size`   | int   | Records per page to show. | YES | 10|
+| `direction`    | String   | Filter sort by desc / asc direction                        | NO | "asc" / "desc" |
 
 **Request body params** 
 
@@ -1573,20 +1735,20 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 
 ## *Get Transactions report records count*
 
-**REQUEST METHOD : `Post`**/report/getTransactionsCount
+**REQUEST METHOD : `POST`**/report/getTransactionsCount
 
 **Must include in header Authentication : Bearer ... with 'OWNER','MANAGER','OBSERVER' ROLE**
 
 **Request body params** 
 
-| Parameter  | Type   | Description           |Required | Example         |
-| :---       | :---   | :---       			  | :---    | :---	          |
-| `branchList`   | List<Int>   | List of branhc ids to use as filter | NO | [2,11,23]|
-| `groupList`   | List<Int>   | List of group ids to use as filter | NO | [5,6,7]|
-| `operList`   | List<Int>   | List of operator ids to use as filter | YES | [22,66,78]|
+| Parameter  | Type   | Description                                                                                            |Required | Example         |
+| :---       | :---   |:-------------------------------------------------------------------------------------------------------| :---    | :---	          |
+| `branchList`   | List<Int>   | List of branhc ids to use as filter                                                                    | NO | [2,11,23]|
+| `groupList`   | List<Int>   | List of group ids to use as filter                                                                     | NO | [5,6,7]|
+| `operList`   | List<Int>   | List of operator ids to use as filter                                                                  | YES | [22,66,78]|
 | `filterCardSerial`   | String   | Card serial to use as filter. Uses wild cards and will return every card with matching to input serial | NO | "123123"|
-| `startDate`   | String   | Filter transactions between start and end Dates | NO | "2024-10-30"|
-| `endDate`   | String   | Filter transactions between start and end Dates | NO | "2025-01-30"|
+| `startDate`   | String   | Filter transactions start date                                                                         | NO | "2024-10-30"|
+| `endDate`   | String   | Filter transactions end date                                                                           | NO | "2025-01-30"|
 
 **RESPONSE**
 
@@ -1596,7 +1758,7 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 
 ## *Get Transactions bill item info*
 
-**REQUEST METHOD : `Post`**/report/getBillData
+**REQUEST METHOD : `POST`**/report/getBillData
 
 **Must include in header Authentication : Bearer ... with 'OWNER','MANAGER','OBSERVER' ROLE**
 
@@ -1665,7 +1827,7 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 
 ## *Get available transactions type*
 
-**REQUEST METHOD : `Get`**/report/getTransTypes
+**REQUEST METHOD : `GET`**/report/getTransTypes
 
 **Must include in header Authentication : Bearer ... with 'OWNER','MANAGER','OBSERVER' ROLE**
 
@@ -1732,9 +1894,141 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
     ]
 	}
 
+# Favourite filters
+
+**REQUEST METHOD : `POST`**/favFilters/create
+
+**Must include in header Authentication : Bearer ... with 'OWNER','MANAGER','OBSERVER' ROLE**
+
+**Request body**
+
+    {
+        "name": "QuickAccess",
+        "branchList": [1, 2],
+        "groupList": [10],
+        "operList": [5],
+        "transTypeCode": ["SALE", "RETURN"],
+        "filterCardSerial": "123444",
+        "startDate": "2024-06-01",
+        "endDate": "2024-06-30"
+    }
+
+**RESPONSE**
+
+    {
+        "name": "QuickAccess",
+        "status": "Created"
+    }
+
+
+**REQUEST METHOD : `GET`**/favFilters/getAll
+
+**Must include in header Authentication : Bearer ... with 'OWNER','MANAGER','OBSERVER' ROLE**
+
+**RESPONSE**
+
+    [
+    {
+        "filterId": 2,
+        "name": "Royal",
+        "branchList": [
+            1
+        ],
+        "groupList": [],
+        "operList": [
+            1
+        ],
+        "transTypeCode": [
+            "INFO"
+        ],
+        "filterCardSerial": "1234",
+        "startDate": "2024-06-01",
+        "endDate": "2024-06-30"
+    },
+    {
+        "filterId": 3,
+        "name": "Филтър 1",
+        "branchList": [
+            1
+        ],
+        "groupList": [],
+        "operList": [
+            1
+        ],
+        "transTypeCode": [],
+        "filterCardSerial": "",
+        "startDate": null,
+        "endDate": null
+    }
+]
+
+**REQUEST METHOD : `GET`**/favFilters/use
+
+**Must include in header Authentication : Bearer ... with 'OWNER','MANAGER','OBSERVER' ROLE**
+
+**Request params**
+
+| Parameter | Type | Description                      |Required | Example |
+|:----------|:-----|:---------------------------------| :---    |:--------|
+| `id`      | Long | Filter id.                       | YES | 0       |
+**RESPONSE**
+
+    {
+    "filterId": 2,
+    "name": "Royal",
+    "branchList": [
+        1
+    ],
+    "groupList": [],
+    "operList": [
+        1
+    ],
+    "transTypeCode": [
+        "INFO"
+    ],
+    "filterCardSerial": "1234",
+    "startDate": "2024-06-01",
+    "endDate": "2024-06-30"
+}
+
+**REQUEST METHOD : `POST`**/favFilters/update
+
+**Must include in header Authentication : Bearer ... with 'OWNER','MANAGER','OBSERVER' ROLE**
+
+**Request params**
+
+| Parameter | Type   | Description                      |Required | Example |
+|:----------|:-------|:---------------------------------| :---    |:--------|
+| `id`      | Long   | Filter id.                       | YES | 0       |
+| `newName` | String | New name for the updated filter. | YES | NewName |
+
+**RESPONSE**
+
+    {
+        "name": "NewName",
+        "status": "Updated"
+    }
+
+**REQUEST METHOD : `Post`**/favFilters/delete
+
+**Must include in header Authentication : Bearer ... with 'OWNER','MANAGER','OBSERVER' ROLE**
+
+**Request params**
+
+| Parameter | Type   | Description |Required | Example |
+|:----------|:-------|:------------| :---    |:--------|
+| `id`      | int    | Filter id.  | YES | 0       |
+
+**RESPONSE**
+
+    {
+        "name": "NewName",
+        "status": "Deleted"
+    }
+
 ## *Get Revision version for Users*
 
-**REQUEST METHOD : `Get`**/report/getUserRevisions
+**REQUEST METHOD : `GET`**/report/getUserRevisions
 
 **Must include in header Authentication : Bearer ... with 'MANAGER','OWNER' ROLE**
 
@@ -1796,7 +2090,7 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
     ]
 	}
 
-**REQUEST METHOD : `Get`**/report/getTransWithoutBillData
+**REQUEST METHOD : `GET`**/report/getTransWithoutBillData
 
 **Must include in header Authentication : Bearer ... with 'MANAGER','OWNER','CASHIER' ROLE**
 
@@ -1947,7 +2241,7 @@ Error Response Fields:
 
 ## *Get Transactions report*
 
-**REQUEST METHOD : `Post`**/report/getTransactionsCount
+**REQUEST METHOD : `POST`**/report/getTransactionsCount
 
 **Must include in header Authentication : Bearer ... with 'OWNER','MANAGER','OBSERVER' ROLE**
 
