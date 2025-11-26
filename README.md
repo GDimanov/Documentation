@@ -70,6 +70,38 @@ API to manage the workflow of using custom vouchers in different trading shops.
     "expiresAt": "1758976767043"
     }
 
+## **VALIDATION OF USERNAME**
+
+**REQUEST METHOD : `GET`**/validation/username
+
+**Must include in header Authentication : Bearer ... with 'ADMIN', 'OWNER','MANAGER' ROLE**
+
+**Request body params**
+
+| Parameter  | Type    | Description   | Required | Example |
+|:-----------|:--------|:--------------|:---------|:--------|
+| `username` | String  | desired value | YES      | 1233    |
+| `shouldBeStrong`         | Boolean |               | YES      | true    |
+
+**RESPONSE**
+
+    false
+
+## **VALIDATION OF PASSWORD**
+
+**REQUEST METHOD : `GET`**/validation/password
+
+**Must include in header Authentication : Bearer ... with 'ADMIN', 'OWNER','MANAGER' ROLE**
+
+**Request body params**
+
+| Parameter  | Type    | Description   | Required | Example          |
+|:-----------|:--------|:--------------|:---------|:-----------------|
+| `password` | String  | desired value | YES      | HJnHbxT68R*      |
+
+**RESPONSE**
+
+    true
 ----------
 
 # Billing 
@@ -121,6 +153,37 @@ API to manage the workflow of using custom vouchers in different trading shops.
 ----------
 
 # USER
+
+## **Create Admin**
+
+**REQUEST METHOD : `POST`**/user/createAdmin
+
+- **Must include in header Authentication : Bearer ... with 'ADMIN' ROLE**
+
+***Reqest body of type JSON***
+
+    {
+    "name" : "manager2",
+    "password" : "myStrongPassword",
+    "displayName" : "MyName"
+    }
+
+***Request body parameters***
+
+| Parameter     | Type   | Description                        | Required | Example            |
+|:--------------| :---   |:-----------------------------------|:---------|:-------------------|
+| `name`        | String   | The username of the user.          | YES      | "Admin12"          |
+| `password`    | String   | The password for the user account. | YES      | "myStrongPassword" |
+| `displayName` | String   | The vissible name for the user.    | NO       | "name"             |
+
+Created user will be automatically assigned to the Company of the user who's creting him!
+
+**RESPONSE**
+
+    {
+    "name" : "Admin12",
+    "status" : "Created"
+    }
 
 ## **Create Owner**
 
@@ -403,10 +466,12 @@ Created user will be automatically assigned to the Company of the user who's cre
 
 **Request params** 
 
-| Parameter  | Type   | Description           |Required | Example         |
-| :---       | :---   | :---       			  | :---    | :---	          |
-| `page`   | int   | Page number. | YES | 0|
-| `size`   | int   | Records per page to show. | YES | 10|
+| Parameter      | Type | Description               | Required | Example |
+|:---------------|:-----|:--------------------------|:---------|:--------|
+| `page`         | int  | Page number.              | YES      | 0       |
+| `size`         | int  | Records per page to show. | YES      | 10      |
+| `onlyActive`   | bool | Only active users.        | NO       | true    |
+| `onlyInactive` | bool | Only inactive users.      | NO       | false   |
 
 **RESPONSE**
 
@@ -473,9 +538,16 @@ Created user will be automatically assigned to the Company of the user who's cre
 
 - **Must include in header Authentication : Bearer ... with 'ADMIN','MANAGER','OWNER' ROLE**
 
+**Request params**
+
+| Parameter      | Type | Description               | Required | Example |
+|:---------------|:-----|:--------------------------|:---------|:--------|
+| `onlyActive`   | bool | Only active users.        | NO       | true    |
+| `onlyInactive` | bool | Only inactive users.      | NO       | false   |
+
 **RESPONSE**
 
-    - will return the total user count for the company of the user : 10 
+    - will return the total user count for the company of the user depends on filter, if it is used: 10 
     - If the user is 'ADMIN' will return the total user count ignoring the company : 24
 
 
@@ -489,6 +561,23 @@ Created user will be automatically assigned to the Company of the user who's cre
 
     - will return the total owners count : 3
 
+## **Get count of all admins**
+
+**REQUEST METHOD : `GET`**/user/viewAllAdmins/count
+
+- **Must include in header Authentication : Bearer ... with 'ADMIN' ROLE**
+
+**Request params**
+
+| Parameter      | Type | Description               | Required | Example |
+|:---------------|:-----|:--------------------------|:---------|:--------|
+| `onlyActive`   | bool | Only active users.        | NO       | true    |
+| `onlyInactive` | bool | Only inactive users.      | NO       | false   |
+
+**RESPONSE**
+
+    - will return the total owners count depends on filter, if it is used: 3
+ 
 ## **Change user data**
 
 
@@ -1257,18 +1346,19 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 
 **Request params** 
 
-| Parameter      | Type   | Description                                                |Required | Example       |
-|:---------------| :---   |:-----------------------------------------------------------| :---    |:--------------|
-| `page`         | int   | Page number.                                               | YES | 0             |
-| `size`         | int   | Records per page to show.                                  | YES | 10            |
-| `onlyExpired`  | int   | Filter show only expired 0-false,1-true                    | NO | 0             |
-| `onlyActive`   | int   | Filter show only active 0-false,1-true                     | NO | 10            |
-| `onlyInactive` | int   | Filter show only inactive 0-false,1-true                   | NO | 10            |
-| `onlyLimited`  | int   | Filter show only limited 0-false,1-true.                   | NO | 0             |
-| `onlyUsed`     | int   | Filter show only used 0-false,1-true                       | NO | 10            |
-| `startDate`    | int   | Show results from start date or between start and end date | NO | 0             |
-| `endDate`      | int   | Show results to end date or between start and end date     | NO | 10            |
-| `groupFilter`  | String   | Show only in selected group                                | NO | 0             |
+| Parameter      | Type   | Description                                                |Required | Example        |
+|:---------------| :---   |:-----------------------------------------------------------| :---    |:---------------|
+| `page`         | int   | Page number.                                               | YES | 0              |
+| `size`         | int   | Records per page to show.                                  | YES | 10             |
+| `onlyExpired`  | int   | Filter show only expired 0-false,1-true                    | NO | 0              |
+| `onlyActive`   | int   | Filter show only active 0-false,1-true                     | NO | 10             |
+| `onlyInactive` | int   | Filter show only inactive 0-false,1-true                   | NO | 10             |
+| `onlyLimited`  | int   | Filter show only limited 0-false,1-true.                   | NO | 0              |
+| `onlyUsed`     | int   | Filter show only used 0-false,1-true                       | NO | 10             |
+| `startDate`    | int   | Show results from start date or between start and end date | NO | 0              |
+| `endDate`      | int   | Show results to end date or between start and end date     | NO | 10             |
+| `groupFilter`  | String   | Show only in selected group                                | NO | 0              |
+ `sortBy`    | String   | Field by which to sort                                     | NO | "currentAmount" |
 | `direction`    | String   | Filter sort by desc / asc direction                        | NO | "asc" / "desc" |
 **RESPONSE**
 
@@ -1516,6 +1606,7 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 | :---       | :---   | :---       			  | :---    | :---	          |
 | `serial`   | String   |Card serial number. | YES | "10"|
 | `amount`   | double   |Amount to deposit in card. | YES | 6.60|
+| `referralTransId`   | Long   |Each transaction includes a unique identifier that can be used to reference or link related operations.For example, in the event of an accidental withdrawal, the corresponding deposit operation ID can be referenced to establish the connection between the related actions. | NO | 1234567|
 
 **RESPONSE**
 
@@ -1553,6 +1644,7 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
 | :---       | :---   | :---       			  | :---    | :---	          |
 | `serial`   | String   |Card serial number. | YES | "10"|
 | `amount`   | double   |Amount to withdraw from card. | YES | 5|
+| `referralTransId`   | Long   |Each transaction includes a unique identifier that can be used to reference or link related operations.For example, in the event of an accidental deposit, the corresponding withdraw operation ID can be referenced to establish the connection between the related actions. | NO | 1234567|
 
 **RESPONSE**
 
@@ -1655,7 +1747,6 @@ It is not necessary to write "startAmount" (default 0) and "cardName" (default c
         "cashBack": false,
         "rechargeable": false
     }]
-----
 
 # Report
 
