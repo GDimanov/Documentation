@@ -14,11 +14,28 @@ This document provides the necessary endpoints and workflows for integrating a P
 
 --------------------------------------------------------------------------------
 # Authentication
+
 Before performing any operations, the POS must authenticate to receive a JWT token.
-Log in
+## Log in
+
 REQUEST METHOD: POST
-ENDPOINT: /login
-Request Body (JSON): | Parameter | Type | Description | Required | Example | | :--- | :--- | :--- | :--- | :--- | | userName | String | Username for the account. | YES | "test" | | userPass | String | Password for the account. | YES | "testingPassword" | | subObjId | Long | ID of the branch/sub-object. Defaults to user's default if omitted. | NO | 10 |
+
+* Endpoint: /login
+
+***Reqest body of type JSON***
+
+    {
+    "userName" : "test",
+    "userPass" : "testingPassword",
+    }
+
+**Request body params** 
+
+| Parameter  | Type   | Description           |Required | Example         |
+| :---       | :---   | :---       			  | :---    | :---	          |
+| `userName`   | String   | The username of the user trying to log in. | YES | "test"|
+| `userPass`   | String   | The password for the user account. | YES | "test"|
+
 Response:
 {
     "userToken": "Bearer eyJhbGciOiJIUzI1NiJ9...",
