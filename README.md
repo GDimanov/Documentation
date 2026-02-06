@@ -259,7 +259,9 @@ Refused Step Example:
 
 • Method: POST
 
-• Endpoint: /card/saga/refund
+• Endpoint: /card/saga/deposit 
+
+• Endpoint: /card/saga/withdraw 
 
 **Request params** 
 
