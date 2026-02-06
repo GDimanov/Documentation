@@ -143,6 +143,8 @@ Requests the sale price of a card.
 | :---       | :---   | :---       			  | :---    | :---	          |
 | `serial`   | String   |Card serial number. | YES | "10"|
 
+> Upon execution the buy card intent will activate and initialize the card.
+
 Response (VARIABLE_LOAD vs FIXED_PRICE): If cardSalePricingType is FIXED_PRICE, the card has a preset value (e.g., 50.00) that must be charged. If it is VARIABLE_LOAD, the price is 0, and the card must be loaded with funds via the deposit endpoint. [User Query]
 
     {
@@ -292,14 +294,17 @@ Refused Step Example:
 --------------------------------------------------------------------------------
 ## Step 3: Close Transaction
 Executes or cancels all reserved steps in the saga.
+
 • Method: GET
+
 • Endpoint: /card/saga/closeTransaction
-• Params:
+
 **Request params** 
 
 | Parameter  | Type   | Description           |Required | Example         |
 | :---       | :---   | :---       			  | :---    | :---	          |
 | `serial`   | String   |Card serial number. | YES | "10"|
+| `isCanceled`   | int   |Default value 0. Set to 1 to cancel all steps! | No | 0 |
 
 Final Response:
 
