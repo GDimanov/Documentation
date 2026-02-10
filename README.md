@@ -124,8 +124,8 @@ Response:
     {
     "sagaId": "7d2f820e-da10-4edb-bb43-0be9dde56d80",
     "sagaStatus": "STARTED",
-    "reasonCode": "",
-    "message": ""
+    "errCode": "",
+    "errMsg": ""
     }
 
 --------------------------------------------------------------------------------
@@ -152,8 +152,8 @@ Response (VARIABLE_LOAD vs FIXED_PRICE): If cardSalePricingType is FIXED_PRICE, 
     "sagaStatus": "STARTED",
     "stepType": "BUY_CARD",
     "stepStatus": "RESERVED",
-    "reasonCode": "PRICE_QUOTED",
-    "message": "Card sell price requested.",
+    "errCode": "PRICE_QUOTED",
+    "errMsg": "Card sell price requested.",
     "duplicate": false,
     "cardSellInfoDTO": {
     "cardSalePricingType": "FIXED_PRICE",
@@ -184,8 +184,8 @@ Idempotent Response:
     "sagaStatus": "STARTED",
     "stepType": "SPEND",
     "stepStatus": "RESERVED",
-    "reasonCode": "SAGA_ACCEPTED",
-    "message": "",
+    "errCode": "SAGA_ACCEPTED",
+    "errMsg": "",
     "duplicate": true 
     }
 
@@ -234,12 +234,12 @@ Idempotent Response:
         {
             "type": "BillData",
             "status": "Success",
-            "errMsg": "No Bill data supplied"
+            "errCode": "No Bill data supplied"
         },
         {
             "type": "BillText",
             "status": "Success",
-            "errMsg": "No errors"
+            "errCode": "No errors"
         }
     ]
 	}
@@ -266,8 +266,8 @@ Refused Step Example:
     "sagaStatus": "STARTED",
     "stepType": "REFUND_SPEND",
     "stepStatus": "REFUSED",
-    "reasonCode": "REFUND_EXCEEDING_AMOUNT",
-    "message": "Refund amount exceeding the original operation amount",
+    "errCode": "REFUND_EXCEEDING_AMOUNT",
+    "errMsg": "Refund amount exceeding the original operation amount",
     "duplicate": false
     }
 
@@ -311,8 +311,8 @@ Final Response:
     {
     "sagaId": "7d2f820e-da10-4edb-bb43-0be9dde56d80",
     "sagaStatus": "COMPLETED",
-    "reasonCode": "",
-    "message": "",
+    "errCode": "",
+    "errMsg": "",
     "transactionSummaryDTO": [
     {
     "transactionId": 0,
