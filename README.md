@@ -120,8 +120,8 @@ Response:
     {
     "sagaId": "88babc07-8f1e-4541-a38b-0cc8c0156527",
     "sagaStatus": "STARTED",
-    "reasonCode": "",
-    "message": "",
+    "errCode": "",
+    "errMsg": "",
     "transactionSummaryDTO": [
     {
     "transactionId": 50,
@@ -133,8 +133,8 @@ Response:
     {
     "sagaId": "2bdbaa27-0160-438a-8dfa-2c2599c5ad8c",
     "sagaStatus": "STARTED",
-    "reasonCode": "",
-    "message": "",
+    "errCode": "",
+    "errMsg": "",
     "transactionSummaryDTO": []
     }
     ]
