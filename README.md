@@ -105,6 +105,41 @@ Attach detailed bill items or text to a finalized transaction.
 
 **Bill text and bill data can be added separetely**
 
+# SAGA Information 
+
+## Get current user active transactions 
+Returns the transactions with status "STARTED"
+
+• Method: GET
+
+• Endpoint: /card/saga/getActiveTransaction
+
+Response:
+
+    [
+    {
+    "sagaId": "88babc07-8f1e-4541-a38b-0cc8c0156527",
+    "sagaStatus": "STARTED",
+    "reasonCode": "",
+    "message": "",
+    "transactionSummaryDTO": [
+    {
+    "transactionId": 50,
+    "stepType": "SPEND",
+    "stepStatus": "RESERVED"
+    }
+    ]
+    },
+    {
+    "sagaId": "2bdbaa27-0160-438a-8dfa-2c2599c5ad8c",
+    "sagaStatus": "STARTED",
+    "reasonCode": "",
+    "message": "",
+    "transactionSummaryDTO": []
+    }
+    ]
+
+
 --------------------------------------------------------------------------------
 # SAGA Transaction Workflow
 
