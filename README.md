@@ -391,6 +391,7 @@ Final Response:
 These codes represent the high-level state of the entire multi-step transaction (Saga).
 
 | Code     | Description  																					  |
+| :---     | :---  																							  |
 |STARTED   | The transaction has been initiated and is currently active for adding steps.					  |
 |COMPLETED | The transaction was successfully closed and all reserved steps have been committed to the ledger.|
 |CANCELLED | The transaction was manually aborted by the user/POS before finalization.						  |
@@ -404,6 +405,7 @@ These codes represent the high-level state of the entire multi-step transaction 
 These codes identify the specific financial or administrative operation being performed within a step.
 
 | Code  		  | Description   												 |
+| :---     | :---  																 |
 | BUY_CARD  	  | Requesting the sale price and intent to activate a new card. |
 | SPEND	    	  | A standard debit operation to pay for goods or services. 	 |
 | DEPOSIT  		  | A credit operation to increase the card's current balance.	 |
@@ -417,6 +419,7 @@ These codes identify the specific financial or administrative operation being pe
 These codes track the lifecycle of an individual step within an active or finalized Saga.
 
 | Code      | Description   |
+| :---      | :---  		|
 | RESERVED  | The step has passed initial validation against the shadow balance and is pending final execution. |
 | EXECUTED  | The step has been successfully processed and recorded in the permanent transaction ledger (card_transaction). |
 | REFUSED | The step was rejected during the reservation phase (e.g., due to insufficient funds or daily limits). |
