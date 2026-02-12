@@ -229,7 +229,7 @@ Reverses a previous SPEND, WITHDRAW, or DEPOSIT.
 
 • Method: POST
 
-• Endpoint: /card/saga/refundSaga
+• Endpoint: /card/saga/refund
 
 • Params: serial, referralTransId, amount
 
@@ -277,7 +277,7 @@ If no amount is send than the full amount will be refunded if possible!
 
 • Method: POST
 
-• Endpoint: /card/saga/refund
+• Endpoint: /card/saga/refundSaga
 
 | Parameter  | Type   | Description           |Required | Example         |
 | :---       | :---   | :---       			  | :---    | :---	          |
