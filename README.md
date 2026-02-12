@@ -212,7 +212,7 @@ Reserves a payment from the card.
 | `amount`   | double   |Amount to spend from card. | YES | 6.60| 
 | `billAsText`   | String   |Text representation of the bill | NO | "Bill text here"|
 
-Idempotent Response:
+Response:
 
     {
     "sagaId": "cbb58b7c-d271-4763-ae14-a7741117e156",
@@ -223,61 +223,6 @@ Idempotent Response:
     "errMsg": "",
     "duplicate": true 
     }
-
-**Request body params** 
-
-| Parameter  | Type   | Description           |Required | Example         |
-| :---       | :---   | :---       			  | :---    | :---	          |
-| `unp`   | String   | Informative field UNP bill Id. | YES | "UNP1223AE11231231231"|
-| `billNumber`   | String   | Informative field bill system Id. | YES | "123551233123"|
-| `billTransactionId`   | String   | Informative field bill system transaction Id. | YES | "1112233"|
-| `billPaymentType`   | String   | Informative field bill primary payment type. | YES | "Card"|
-| `objectId`   | int   | Id of the branch processing the transaction. | YES | 100|
-| `transactionDate`   | String   | Informative date of bill.<br>No format limitations<br> | YES | "2025-17-10"|
-| `itemName`   | String    |Informative name of the item included in the bill | YES | "Домат"|
-| `itemGroup`   | String   | Informative name of the group item is part of. | YES | "Зеленчуци"|
-| `itemBarcode`   | String   | Informative item barcode | YES | ""|
-| `itemPrice`   | double   | Informative price of item. | YES | 4.80|
-| `itemQuant`   | double   | Informative quont of item in sale. | YES | 2.30|
-| `itemDiscount`   | double   | Informative discount from price. | YES | 0|
-
-**RESPONSE**
-
-	{
-    "cardResponseDTO": {
-        "transactionId": 54,
-        "serialNumber": "1",
-        "startDate": "2025-01-06",
-        "endDate": "2025-07-06",
-        "validMonths": 6,
-        "startAmount": 50.00,
-        "amountBeforeOperation": 46.00,
-        "currentAmount": 41.00,
-        "cashbackAmount": 0,
-        "limitPerDay": 0.00,
-	    "initiated": true,
-        "groupName": "Test",
-        "forbiddenObjects": [],
-        "active": true,
-        "cashBack": false,
-        "reusable": true,
-        "vname": "hmmm",
-        "rechargeable": true,
-        "used": false
-    },
-    "billData": [
-        {
-            "type": "BillData",
-            "status": "Success",
-            "errCode": "No Bill data supplied"
-        },
-        {
-            "type": "BillText",
-            "status": "Success",
-            "errCode": "No errors"
-        }
-    ]
-	}
 
 ### C. Unified Refund
 Reverses a previous SPEND, WITHDRAW, or DEPOSIT.
