@@ -389,31 +389,36 @@ Final Response:
  
 ## 1. Saga Status (SagaStatus)
 These codes represent the high-level state of the entire multi-step transaction (Saga).
-| Code  | Description   |
-|STARTED | The transaction has been initiated and is currently active for adding steps.|
+
+| Code     | Description  																					  |
+|STARTED   | The transaction has been initiated and is currently active for adding steps.					  |
 |COMPLETED | The transaction was successfully closed and all reserved steps have been committed to the ledger.|
-|CANCELLED | The transaction was manually aborted by the user/POS before finalization.|
-|REJECTED| The transaction failed to start or was aborted due to business logic or technical errors. |
-|EXPIRED|The 15-minute validity window passed without activity, rendering the saga inactive.|
+|CANCELLED | The transaction was manually aborted by the user/POS before finalization.						  |
+|REJECTED  | The transaction failed to start or was aborted due to business logic or technical errors. 		  |
+|EXPIRED   |The 15-minute validity window passed without activity, rendering the saga inactive.				  |
+
+* EXPIRED validation is turned off. Saga lifecycle will end only if close transaction is called on them!
 
 --------------------------------------------------------------------------------
 ## 2. Saga Step Types (SagaStepType)
 These codes identify the specific financial or administrative operation being performed within a step.
-| Code  | Description   |
-| BUY_CARD | Requesting the sale price and intent to activate a new card. |
-| SPEND | A standard debit operation to pay for goods or services. |
-| DEPOSIT | A credit operation to increase the card's current balance. |
-| WITHDRAW | A debit operation to withdraw funds from the card balance. |
-| REFUND_SPEND | Specifically reverses a previous SPEND transaction (Credit). |
-| REFUND_WITHDRAW | Reverses a previous WITHDRAW (acts as a Deposit/Credit). |
-| REFUND_DEPOSIT | Reverses a previous DEPOSIT (acts as a Withdraw/Debit). |
+
+| Code  		  | Description   												 |
+| BUY_CARD  	  | Requesting the sale price and intent to activate a new card. |
+| SPEND	    	  | A standard debit operation to pay for goods or services. 	 |
+| DEPOSIT  		  | A credit operation to increase the card's current balance.	 |
+| WITHDRAW    	  | A debit operation to withdraw funds from the card balance. 	 |
+| REFUND_SPEND    | Specifically reverses a previous SPEND transaction (Credit). |
+| REFUND_WITHDRAW | Reverses a previous WITHDRAW (acts as a Deposit/Credit).  	 |
+| REFUND_DEPOSIT  | Reverses a previous DEPOSIT (acts as a Withdraw/Debit). 	 |
 
 --------------------------------------------------------------------------------
 ## 3. Saga Step Status (SagaStepStatus)
 These codes track the lifecycle of an individual step within an active or finalized Saga.
-| Code  | Description   |
-| RESERVED | The step has passed initial validation against the shadow balance and is pending final execution. |
-| EXECUTED | The step has been successfully processed and recorded in the permanent transaction ledger (card_transaction). |
+
+| Code      | Description   |
+| RESERVED  | The step has passed initial validation against the shadow balance and is pending final execution. |
+| EXECUTED  | The step has been successfully processed and recorded in the permanent transaction ledger (card_transaction). |
 | REFUSED | The step was rejected during the reservation phase (e.g., due to insufficient funds or daily limits). |
 | CANCELLED | The step was part of a saga that was manually aborted or reached its 15-minute TTL without being closed. |
 
