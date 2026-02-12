@@ -430,7 +430,11 @@ These codes track the lifecycle of an individual step within an active or finali
 These codes are returned in the reasonCode field of API responses to provide granular feedback.
 
 • SAGA_ACTIVE: Attempted to start a new transaction while one is already in progress for the card.
+
 • SAGA_ACCEPTED: The operation was successfully reserved and the shadow balance updated.
+
 • PRICE_QUOTED: Returned after a BUY_CARD intent to provide card sale information.
+
 • SAGA_NOT_ACTIVE: Attempted to close or add a step to a card with no active saga.
+
 • INTERNAL_ERROR: An unexpected server-side error occurred during processing.
