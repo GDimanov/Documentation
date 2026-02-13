@@ -116,28 +116,36 @@ Returns the transactions with status "STARTED"
 
 Response:
 
-    [
+[
     {
-    "sagaId": "88babc07-8f1e-4541-a38b-0cc8c0156527",
-    "sagaStatus": "STARTED",
-    "errCode": "",
-    "errMsg": "",
-    "transactionSummaryDTO": [
-    {
-    "transactionId": 50,
-    "stepType": "SPEND",
-    "stepStatus": "RESERVED"
-    }
-    ]
+        "sagaId": "4044f00e-ea65-4ca9-ab1b-f97a1cb54248",
+        "sagaStatus": "STARTED",
+        "errCode": "",
+        "errMsg": "",
+        "cardSerial": "00025",
+        "transactionSummaryDTO": [
+            {
+                "transactionId": 14,
+                "stepType": "REFUND_BUY",
+                "stepStatus": "REFUSED"
+            }
+        ]
     },
     {
-    "sagaId": "2bdbaa27-0160-438a-8dfa-2c2599c5ad8c",
-    "sagaStatus": "STARTED",
-    "errCode": "",
-    "errMsg": "",
-    "transactionSummaryDTO": []
+        "sagaId": "fb1e34bc-13a7-4a8b-9753-3e45c1f98796",
+        "sagaStatus": "STARTED",
+        "errCode": "",
+        "errMsg": "",
+        "cardSerial": "00024",
+        "transactionSummaryDTO": [
+            {
+                "transactionId": 15,
+                "stepType": "SPEND",
+                "stepStatus": "RESERVED"
+            }
+        ]
     }
-    ]
+]
 
 
 --------------------------------------------------------------------------------
@@ -160,7 +168,8 @@ Response:
     "sagaId": "7d2f820e-da10-4edb-bb43-0be9dde56d80",
     "sagaStatus": "STARTED",
     "errCode": "",
-    "errMsg": ""
+    "errMsg": "",
+	"cardSerial": "00024"
     }
 
 --------------------------------------------------------------------------------
@@ -225,7 +234,9 @@ Response:
     }
 
 ### C. Unified Refund
-Reverses a previous SPEND, WITHDRAW, or DEPOSIT.
+Reverses a previous SPEND, WITHDRAW, DEPOSIT, BUY
+
+> Refunding a BUY transaction will deactivate the card.
 
 • Method: POST
 
@@ -314,19 +325,20 @@ Executes or cancels all reserved steps in the saga.
 
 Final Response:
 
-    {
-    "sagaId": "7d2f820e-da10-4edb-bb43-0be9dde56d80",
+	{
+    "sagaId": "4044f00e-ea65-4ca9-ab1b-f97a1cb54248",
     "sagaStatus": "COMPLETED",
     "errCode": "",
     "errMsg": "",
+    "cardSerial": "00025",
     "transactionSummaryDTO": [
-    {
-    "transactionId": 0,
-    "stepType": "REFUND_SPEND",
-    "stepStatus": "REFUSED"
-    }
+        {
+            "transactionId": 0,
+            "stepType": "REFUND_BUY",
+            "stepStatus": "REFUSED"
+        }
     ]
-    }
+	}
 
 
 --------------------------------------------------------------------------------
@@ -358,6 +370,8 @@ These codes identify the specific financial or administrative operation being pe
 | REFUND_SPEND    | Specifically reverses a previous SPEND transaction (Credit). |
 | REFUND_WITHDRAW | Reverses a previous WITHDRAW (acts as a Deposit/Credit).  	 |
 | REFUND_DEPOSIT  | Reverses a previous DEPOSIT (acts as a Withdraw/Debit). 	 |
+| REFUND_BUY      | Reverse the buy intent and deactivates the card.		     |
+
 
 --------------------------------------------------------------------------------
 ## 3. Saga Step Status (SagaStepStatus)
