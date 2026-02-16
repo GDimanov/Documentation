@@ -13,7 +13,26 @@ This document provides the necessary endpoints and workflows for integrating a P
 --------------------------------------------------------------------------------
 # Authentication
 
+## Request Authentication
+
+All API endpoints (with the exception of /login) require a valid JSON Web Token (JWT) to be included in the request headers.
+
+1. Obtain a Token: Send a POST request to the /login endpoint with valid credentials.
+
+2. Authorize Requests: Include the returned userToken in the header of every subsequent request.
+
+3. Header Format:
+
+    ◦ Key: Authorization
+
+    ◦ Value: Bearer <your_token_here>
+
+Example Header: Authorization: Bearer eyJhbGciOiJIUzI1NiJ9...
+
+Note: Access to specific endpoints is restricted based on user roles (e.g. OWNER, MANAGER, CASHIER etc..). Ensure your authenticated user has the required permissions for the operation you are attempting.
+
 Before performing any operations, the POS must authenticate to receive a JWT token.
+
 ## Log in
 
 REQUEST METHOD: POST
