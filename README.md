@@ -343,16 +343,26 @@ If no amount is send than the full amount will be refunded if possible!
 
 Response :
  
+    [
     {
-    "sagaId": "ff6d5270-3fb1-4deb-9110-864fda98e0d3",
+    "sagaId": "8f71518d-7790-4332-817e-a47434b986c3",
     "sagaStatus": "STARTED",
-    "stepType": "REFUND_SPEND",
+    "stepType": "REFUND_BUY",
+    "stepStatus": "RESERVED",
+    "errCode": "SAGA_ACCEPTED",
+    "errMsg": "",
+    "duplicate": false
+    },
+    {
+    "sagaId": "8f71518d-7790-4332-817e-a47434b986c3",
+    "sagaStatus": "STARTED",
+    "stepType": "REFUND_DEPOSIT",
     "stepStatus": "RESERVED",
     "errCode": "SAGA_ACCEPTED",
     "errMsg": "",
     "duplicate": false
     }
-
+    ]
 --------------------------------------------------------------------------------
 ## Step 3: Close Transaction
 Executes or cancels all reserved steps in the saga.
