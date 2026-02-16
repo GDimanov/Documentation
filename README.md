@@ -10,8 +10,6 @@ This document provides the necessary endpoints and workflows for integrating a P
 
 [3. SAGA Transaction Workflow](#SAGA-Transaction-Workflow)
 
-[3.1 SAGA Transaction Workflow](#SAGA-Transaction-Workflow)
-
 --------------------------------------------------------------------------------
 # Authentication
 
@@ -283,7 +281,34 @@ Refused Step Example:
 | `amount`   | double   |Amount to deposit in card. | YES | 6.60|
 • Note: If referralTransId > 0, these route to refund logic automatically.
 
+Response : 
+
+	Accepted :
+
+    {
+    "sagaId": "445bf7fd-e442-49b8-af01-19153ee6a1dc",
+    "sagaStatus": "STARTED",
+    "stepType": "DEPOSIT",
+    "stepStatus": "RESERVED",
+    "errCode": "SAGA_ACCEPTED",
+    "errMsg": "",
+    "duplicate": false
+    }
+
+	Refused :
+
+    {
+    "sagaId": "258b319d-cbbc-4373-88f4-462433972477",
+    "sagaStatus": "STARTED",
+    "stepType": "DEPOSIT",
+    "stepStatus": "REFUSED",
+    "errCode": "CARD_USED",
+    "errMsg": "Тази карта вече е била използвана!\nПовторното и използване е забранено!",
+    "duplicate": false
+    }
+
 ### E. Refund by saga UUID 
+
 By supplying the UUID you can execute refund on all refundable operations within the transaction.
 If no amount is send than the full amount will be refunded if possible!
 
