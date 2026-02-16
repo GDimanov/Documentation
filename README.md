@@ -37,12 +37,13 @@ REQUEST METHOD: POST
 | `userPass`   | String   | The password for the user account. | YES | "test"|
 
 Response:
-{
+
+    {
     "userToken": "Bearer eyJhbGciOiJIUzI1NiJ9...",
     "userRoles": ["CASHIER"],
     "userName": "Eltrade",
     "expiresAt": "1758976767043"
-}
+    }
 
 --------------------------------------------------------------------------------
 # General Utilities
