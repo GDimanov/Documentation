@@ -146,6 +146,8 @@ Response:
                 "transactionId": 14,
                 "stepType": "REFUND_BUY",
                 "stepStatus": "REFUSED"
+  		  	    "errCode": "",
+    		    "errMsg": ""
             }
         ]
     },
@@ -160,6 +162,8 @@ Response:
                 "transactionId": 15,
                 "stepType": "SPEND",
                 "stepStatus": "RESERVED"
+  		        "errCode": "",
+    		    "errMsg": ""
             }
         ]
     }
@@ -378,7 +382,9 @@ Executes or cancels all reserved steps in the saga.
 | `serial`   | String   |Card serial number. | YES | "10"|
 | `isCanceled`   | int   |Default value 0. Set to 1 to cancel all steps! | No | 0 |
 
-Final Response:
+Response:
+
+ All steps pass
 
 	{
     "sagaId": "4044f00e-ea65-4ca9-ab1b-f97a1cb54248",
@@ -391,9 +397,30 @@ Final Response:
             "transactionId": 0,
             "stepType": "REFUND_BUY",
             "stepStatus": "REFUSED"
+  		    "errCode": "",
+    		"errMsg": ""
         }
     ]
 	}
+
+ Fail step
+
+    {
+   	 "sagaId": "7deeb2b2-e9ef-4411-ac8e-f97cec94f848",
+    "sagaStatus": "COMPLETED",
+    "errCode": "",
+    "errMsg": "",
+    "cardSerial": "00027",
+    "transactionSummaryDTO": [
+    {
+   		 "transactionId": 0,
+   		 "stepType": "REFUND_SPEND",
+   		 "stepStatus": "REFUSED",
+   		 "errCode": "CARD_USED",
+   		 "errMsg": "Тази карта вече е била използвана!\nПовторното и използване е забранено!"
+    }
+    ]
+    }
 
 
 --------------------------------------------------------------------------------
