@@ -196,7 +196,7 @@ Response:
 
 --------------------------------------------------------------------------------
 ## Step 2: Add Transaction Steps
-Operations added to a saga are idempotent. Each consecutive attempt with the same parameters will return the same result, but the duplicate field will be true. [User Query]
+Operations added to a saga are idempotent. Each consecutive attempt with the same parameters will return the same result, but the duplicate field will be true. Retrys are allowed if previous attempt was REFUSED (e.g. insufficient funds)  [User Query]
 
 ### A. Buy Card Intent
 Requests the sale price of a card.
