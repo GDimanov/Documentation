@@ -113,7 +113,25 @@ Attach detailed bill items or text to a finalized transaction.
 | `transactionId`   | Integer   |Amount to spend from card. | YES | 52| 
 | `billAsText`   | String   |Text representation of the bill | NO | "Bill text here"|
 
-**Request body of type JSON**
+Response:
+
+	[
+    {
+        "transactionId": 324,
+        "billResponse": [
+            {
+                "type": "BillData",
+                "status": "Success",
+                "errMsg": "No Bill data supplied"
+            },
+            {
+                "type": "BillText",
+                "status": "Success",
+                "errMsg": "No errors"
+            }
+        ]
+    }
+	]
 
 ----------
 
@@ -134,41 +152,73 @@ Returns the transactions with status "STARTED"
 
 Response:
 
-[
+    [
     {
-        "sagaId": "4044f00e-ea65-4ca9-ab1b-f97a1cb54248",
-        "sagaStatus": "STARTED",
-        "errCode": "",
-        "errMsg": "",
-        "cardSerial": "00025",
-        "transactionSummaryDTO": [
-            {
-                "transactionId": 14,
-                "stepType": "REFUND_BUY",
-                "stepStatus": "REFUSED"
-  		  	    "errCode": "",
-    		    "errMsg": ""
-            }
-        ]
+    "sagaId": "4044f00e-ea65-4ca9-ab1b-f97a1cb54248",
+    "sagaStatus": "STARTED",
+    "errCode": "",
+    "errMsg": "",
+    "cardSerial": "00025",
+    "transactionSummaryDTO": [
+    {
+    "transactionId": 14,
+    "stepType": "REFUND_BUY",
+    "stepStatus": "REFUSED"
+    "errCode": "",
+    "errMsg": ""
+    }
+    ]
     },
     {
-        "sagaId": "fb1e34bc-13a7-4a8b-9753-3e45c1f98796",
-        "sagaStatus": "STARTED",
-        "errCode": "",
-        "errMsg": "",
-        "cardSerial": "00024",
-        "transactionSummaryDTO": [
+    "sagaId": "fb1e34bc-13a7-4a8b-9753-3e45c1f98796",
+    "sagaStatus": "STARTED",
+    "errCode": "",
+    "errMsg": "",
+    "cardSerial": "00024",
+    "transactionSummaryDTO": [
+    {
+    "transactionId": 15,
+    "stepType": "SPEND",
+    "stepStatus": "RESERVED"
+    "errCode": "",
+    "errMsg": ""
+    }
+    ]
+    }
+    ]
+
+## Add Bill data by saga uuid 
+Adds the supplied bill data to all transactions found within the saga
+
+• Method: POST
+
+• Endpoint: /card/saga/addBillData
+
+| Parameter  | Type   | Description           |Required | Example         |
+| :---       | :---   | :---       			  | :---    | :---	          |
+| `serial`   | String   |Card serial number. | YES | "10"|
+| `uuid`   | String   |Amount to spend from card. | YES | 52| 
+| `billAsText`   | String   |Text representation of the bill | NO | "Bill text here"|
+
+Response:
+
+	[
+    {
+        "transactionId": 324,
+        "billResponse": [
             {
-                "transactionId": 15,
-                "stepType": "SPEND",
-                "stepStatus": "RESERVED"
-  		        "errCode": "",
-    		    "errMsg": ""
+                "type": "BillData",
+                "status": "Success",
+                "errMsg": "No Bill data supplied"
+            },
+            {
+                "type": "BillText",
+                "status": "Fail",
+                "errMsg": "Error billText data for this transaction exists!"
             }
         ]
     }
-]
-
+	]
 
 --------------------------------------------------------------------------------
 # SAGA Transaction Workflow
@@ -227,7 +277,6 @@ Response (VARIABLE_LOAD vs FIXED_PRICE): If cardSalePricingType is FIXED_PRICE, 
     "minLoadAmount": null,
     "maxLoadAmount": null,
     "activationFee": null
-    }
     }
 
 ### B. Spend Sum
@@ -302,6 +351,7 @@ Refused Step Example:
 | `serial`   | String   |Card serial number. | YES | "10"|
 | `referralTransId`   | Long   |Id of the Spend transaction. | YES | 1234567|
 | `amount`   | double   |Amount to deposit in card. | YES | 6.60|
+
 • Note: If referralTransId > 0, these route to refund logic automatically.
 
 Response : 
@@ -406,18 +456,18 @@ Response:
  Fail step
 
     {
-   	 "sagaId": "7deeb2b2-e9ef-4411-ac8e-f97cec94f848",
+    "sagaId": "7deeb2b2-e9ef-4411-ac8e-f97cec94f848",
     "sagaStatus": "COMPLETED",
     "errCode": "",
     "errMsg": "",
     "cardSerial": "00027",
     "transactionSummaryDTO": [
     {
-   		 "transactionId": 0,
-   		 "stepType": "REFUND_SPEND",
-   		 "stepStatus": "REFUSED",
-   		 "errCode": "CARD_USED",
-   		 "errMsg": "Тази карта вече е била използвана!\nПовторното и използване е забранено!"
+    "transactionId": 0,
+    "stepType": "REFUND_SPEND",
+    "stepStatus": "REFUSED",
+    "errCode": "CARD_USED",
+    "errMsg": "Тази карта вече е била използвана!\nПовторното и използване е забранено!"
     }
     ]
     }
